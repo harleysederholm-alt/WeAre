@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: weare
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    networks:
+      - weare-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - weare-network
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: weare
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - weare-network
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      # Note: Client-side calls still go to localhost:3001 (browser).
+      # Server-side calls (SSR) might need internal networking if we used them, 
+      # but our API calls are mostly client-side.
+      # Ideally we'd use a reverse proxy (Nginx) to route /api to 'api' and / to 'web' on port 80.
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - weare-network
+
+networks:
+  weare-network:
+    driver: bridge
+
+volumes:
+  postgres_data_prod:
