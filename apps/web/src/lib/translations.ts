@@ -117,7 +117,20 @@ export const translations = {
         salesReport: 'Sales Report',
         totalSales: 'Total Sales',
 
-        // Common
+        // Daily Grid
+        category: 'Category',
+        tax: 'VAT / Tax (%)',
+        employee: 'Employee',
+        role: 'Role',
+        start: 'Start',
+        end: 'End',
+        type: 'Type',
+        cashTips: 'Cash Tips',
+        vouchers: 'Vouchers',
+        voucherCount: 'Count (pcs)',
+        voucherValue: 'Total Value (€)',
+
+        // Common 
         loading: 'Loading...',
         success: 'Success',
         error: 'Error',
@@ -238,6 +251,19 @@ export const translations = {
         // Reports
         salesReport: 'Myyntiraportti',
         totalSales: 'Kokonaismyynti',
+
+        // Daily Grid
+        category: 'Kategoria',
+        tax: 'ALV / Vero (%)',
+        employee: 'Työntekijä',
+        role: 'Rooli',
+        start: 'Alkaa',
+        end: 'Päättyy',
+        type: 'Tyyppi',
+        cashTips: 'Käteiset Tipit',
+        vouchers: 'Lounassetelit',
+        voucherCount: 'Kpl',
+        voucherValue: 'Yhteensä (€)',
 
         // Common
         loading: 'Ladataan...',

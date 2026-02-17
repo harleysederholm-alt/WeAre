@@ -22,14 +22,14 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
 
     // Mock Data
     const [salesData, setSalesData] = useState([
-        { category: 'Food', amount: 0, tax: 14 },
-        { category: 'Alcohol', amount: 0, tax: 24 },
-        { category: 'Non-Alcohol', amount: 0, tax: 14 },
+        { category: 'Ruoka', amount: 0, tax: 14 },
+        { category: 'Alkoholi', amount: 0, tax: 24 },
+        { category: 'Alkoholiton', amount: 0, tax: 14 },
     ]);
 
     const [shiftData, setShiftData] = useState([
-        { name: 'Matti Meikäläinen', role: 'CHEF', start: '10:00', end: '18:00', type: 'Normaali' },
-        { name: 'Teppo Testaaja', role: 'WAITER', start: '16:00', end: '23:30', type: 'Normaali' },
+        { name: 'Matti Meikäläinen', role: 'KOKKI', start: '10:00', end: '18:00', type: 'Normaali' },
+        { name: 'Teppo Testaaja', role: 'TARJOILIJA', start: '16:00', end: '23:30', type: 'Normaali' },
     ]);
 
     const [cashTips, setCashTips] = useState<number>(0);
@@ -68,7 +68,7 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
     };
 
     const salesDefs = useMemo<ColDef[]>(() => [
-        { field: 'category', headerName: 'Category', editable: false, flex: 1 },
+        { field: 'category', headerName: t('category'), editable: false, flex: 1 },
         {
             field: 'amount',
             headerName: t('totalSales') + ' (€)',
@@ -79,26 +79,26 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
         },
         {
             field: 'tax',
-            headerName: 'ALV / Tax (%)',
+            headerName: t('tax'),
             editable: false,
             width: 100
         }
     ], [t]);
 
     const shiftDefs = useMemo<ColDef[]>(() => [
-        { field: 'name', headerName: 'Employee', editable: true, flex: 2 },
-        { field: 'role', headerName: 'Role', editable: true, flex: 1 },
-        { field: 'start', headerName: 'Start', editable: true, flex: 1 },
-        { field: 'end', headerName: 'End', editable: true, flex: 1 },
+        { field: 'name', headerName: t('employee'), editable: true, flex: 2 },
+        { field: 'role', headerName: t('role'), editable: true, flex: 1 },
+        { field: 'start', headerName: t('start'), editable: true, flex: 1 },
+        { field: 'end', headerName: t('end'), editable: true, flex: 1 },
         {
             field: 'type',
-            headerName: 'Type',
+            headerName: t('type'),
             editable: true,
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: { values: ['Normaali', 'Muu', 'Poissa'] },
             flex: 1
         },
-    ], []);
+    ], [t]);
 
     const onCellFocused = useCallback((event: CellFocusedEvent) => {
         const col = event.column;
@@ -131,7 +131,7 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
             </section>
 
             <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 className="text-lg font-bold mb-4 text-slate-800">Käteiset Tipit (Cash Tips)</h2>
+                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('cashTips')}</h2>
                 <div className="flex items-center gap-4">
                     <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">€</span>
@@ -148,10 +148,10 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
             </section>
 
             <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 className="text-lg font-bold mb-4 text-slate-800">Lounasetelit (Vouchers)</h2>
+                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('vouchers')}</h2>
                 <div className="flex items-center gap-4">
                     <div className="relative">
-                        <label className="block text-xs text-slate-400 mb-1">Count (kpl)</label>
+                        <label className="block text-xs text-slate-400 mb-1">{t('voucherCount')}</label>
                         <input
                             type="number"
                             className="px-3 py-2 border rounded-lg w-24 font-mono"
@@ -161,7 +161,7 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
                         />
                     </div>
                     <div className="relative">
-                        <label className="block text-xs text-slate-400 mb-1">Total Value (€)</label>
+                        <label className="block text-xs text-slate-400 mb-1">{t('voucherValue')}</label>
                         <span className="absolute left-2 top-[29px] text-slate-500">€</span>
                         <input
                             type="number"

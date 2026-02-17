@@ -59,7 +59,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             {/* Desktop Sidebar - White Glass Theme */}
             <aside className="hidden lg:flex flex-col w-64 bg-slate-50/90 backdrop-blur-md border-r border-slate-200 fixed h-full z-20 shadow-sm text-slate-600">
                 <div className="p-6 border-b border-slate-200/50">
-                    <h1 className="text-xl font-bold tracking-tight text-slate-900">WeAre Portal</h1>
+                    <h1 className="text-xl font-bold tracking-tight text-slate-900">WeAre Portaali</h1>
                     <p className="text-xs text-slate-400 mt-1 font-medium">{activeRestaurant?.name}</p>
                 </div>
 

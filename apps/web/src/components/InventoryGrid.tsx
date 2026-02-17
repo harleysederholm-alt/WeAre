@@ -52,15 +52,15 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
     useEffect(() => {
         // Mock Master Items
         const masterItems: InventoryRow[] = [
-            { itemId: 'item-1', name: 'Coffee Beans', quantity: 0, unit: 'kg', expected: 0 },
+            { itemId: 'item-1', name: 'Kahvipavut (Espresso)', quantity: 0, unit: 'kg', expected: 0 },
             { itemId: 'item-2', name: 'Maito 1L', quantity: 0, unit: 'L', expected: 0 },
             { itemId: 'item-3', name: 'Kahvipavut 1kg', quantity: 0, unit: 'L', expected: 0 },
-            { itemId: 'item-4', name: 'Sugar', quantity: 0, unit: 'kg', expected: 0 },
-            { itemId: 'item-5', name: 'Paper Cups (Large)', quantity: 0, unit: 'pcs', expected: 0 },
-            { itemId: 'item-6', name: 'Paper Cups (Small)', quantity: 0, unit: 'pcs', expected: 0 },
-            { itemId: 'item-7', name: 'Napkins', quantity: 0, unit: 'pcs', expected: 0 },
-            { itemId: 'item-8', name: 'Trash Bags', quantity: 0, unit: 'roll', expected: 0 },
-            { itemId: 'item-9', name: 'Dish Soap', quantity: 0, unit: 'L', expected: 0 },
+            { itemId: 'item-4', name: 'Sokeri', quantity: 0, unit: 'kg', expected: 0 },
+            { itemId: 'item-5', name: 'Kupit (Iso)', quantity: 0, unit: 'kpl', expected: 0 },
+            { itemId: 'item-6', name: 'Kupit (Pieni)', quantity: 0, unit: 'kpl', expected: 0 },
+            { itemId: 'item-7', name: 'Lautasliinat', quantity: 0, unit: 'rll', expected: 0 },
+            { itemId: 'item-8', name: 'Jätesäkit', quantity: 0, unit: 'rll', expected: 0 },
+            { itemId: 'item-9', name: 'Astianpesuaine', quantity: 0, unit: 'L', expected: 0 },
         ];
         setRowData(masterItems);
 
