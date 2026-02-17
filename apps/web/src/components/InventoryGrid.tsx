@@ -190,7 +190,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
                 }}
             />
 
-            <div className="flex justify-between items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <div className="hidden md:flex justify-between items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
                 <p className="text-sm text-slate-500">
                     {t('requiredItemsNote')}
                 </p>

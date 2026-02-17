@@ -171,7 +171,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             )}
 
             {/* Main Content Area */}
-            <main className="flex-1 transition-all duration-300 w-full lg:pl-64 lg:pr-64 pb-20 lg:pb-8">
+            <main className="flex-1 transition-all duration-300 w-full lg:pl-64 lg:pr-64 pb-32 lg:pb-8">
                 {/* Mobile Header */}
                 <header className="lg:hidden bg-white/80 backdrop-blur-md px-4 py-3 shadow-sm border-b border-slate-100 flex justify-between items-center sticky top-0 z-30 transition-all">
                     <div className="flex items-center gap-3">

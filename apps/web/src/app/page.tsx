@@ -163,7 +163,7 @@ function Dashboard() {
                 </div>
             ) : null}
 
-            <div className="mt-8 flex justify-end gap-4">
+            <div className="mt-8 hidden md:flex justify-end gap-4">
                 {(activeTab === 'daily' || activeTab === 'waste' || activeTab === 'inventory') && (
                     <button
                         onClick={handleSubmit}
@@ -217,9 +217,7 @@ function Dashboard() {
                 activeTab={activeTab}
                 onAction={(action) => {
                     if (action === 'submit_daily') handleSubmit();
-                    if (action === 'add_waste') setActiveTab('waste'); // Or scroll to add? WasteGrid adds via row. 
-                    // Actually, WasteGrid might need a 'Add Item' button if it's empty? 
-                    // FAB for Waste usually means "Add Waste Log".
+                    if (action === 'submit_waste') handleSubmit();
                     if (action === 'submit_inventory') handleSubmit();
                     if (action === 'send_order') alert('Order sending implemented in v2');
                 }}

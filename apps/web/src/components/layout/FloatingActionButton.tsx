@@ -15,7 +15,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ acti
             case 'daily':
                 return { label: t('submitDaily'), icon: Check, action: 'submit_daily', color: 'bg-indigo-600' };
             case 'waste':
-                return { label: t('submitWaste'), icon: Plus, action: 'add_waste', color: 'bg-rose-600' };
+                return { label: t('submitWaste'), icon: Check, action: 'submit_waste', color: 'bg-rose-600' };
             case 'inventory':
                 return { label: t('submitInventory'), icon: Check, action: 'submit_inventory', color: 'bg-emerald-600' };
             case 'orders':
