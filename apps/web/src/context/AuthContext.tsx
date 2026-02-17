@@ -33,15 +33,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Load from local storage on mount
     useEffect(() => {
-        // Disable auto-login in production
-        if (process.env.NODE_ENV === 'production') {
+        // Safe check for production environment
+        const isProduction = typeof process !== 'undefined' && process.env.NODE_ENV === 'production';
+
+        // In production, force manual login (don't load user from storage)
+        if (isProduction) {
+            // Still load active restaurant if possible, or default
+            const storedRestaurant = typeof window !== 'undefined' ? localStorage.getItem('weare_active_restaurant') : null;
+            if (storedRestaurant && storedRestaurant !== 'undefined') {
+                try {
+                    setActiveRestaurant(JSON.parse(storedRestaurant));
+                } catch (e) {
+                    setActiveRestaurant(availableRestaurants[0]);
+                }
+            } else {
+                setActiveRestaurant(availableRestaurants[0]);
+            }
             return;
         }
 
+        if (typeof window === 'undefined') return;
+
         const stored = localStorage.getItem('weare_user');
-        if (stored) {
+        if (stored && stored !== 'undefined') {
             try {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
                 setUser(JSON.parse(stored));
             } catch (e) {
                 console.error("Failed to parse stored user", e);
@@ -50,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Initialize active restaurant
         const storedRestaurant = localStorage.getItem('weare_active_restaurant');
-        if (storedRestaurant) {
+        if (storedRestaurant && storedRestaurant !== 'undefined') {
             try {
                 setActiveRestaurant(JSON.parse(storedRestaurant));
             } catch (e) {

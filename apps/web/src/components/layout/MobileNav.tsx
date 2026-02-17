@@ -1,14 +1,15 @@
 import React from 'react';
-import { Calendar, Trash2, Package, Menu, X } from 'lucide-react';
+import { Calendar, Trash2, Package, Menu, LogOut } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 interface MobileNavProps {
     activeTab: string;
     onTabChange: (tab: any) => void;
-    onToggleMenu: () => void; // For opening a drawer with more options
+    onToggleMenu: () => void;
+    onLogout: () => void;
 }
 
-export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange, onToggleMenu }) => {
+export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange, onToggleMenu, onLogout }) => {
     const { t } = useLanguage();
 
     const navItems = [
@@ -40,6 +41,13 @@ export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange, on
                 >
                     <Menu size={24} />
                     <span className="text-[10px] font-medium">Menu</span>
+                </button>
+                <button
+                    onClick={onLogout}
+                    className={`flex flex-col items-center justify-center w-full h-full space-y-1 text-red-400 hover:text-red-600`}
+                >
+                    <LogOut size={24} />
+                    <span className="text-[10px] font-medium">{t('logout')}</span>
                 </button>
             </div>
         </div>

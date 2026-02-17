@@ -197,6 +197,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
                 onToggleMenu={() => setIsMobileMenuOpen(true)}
+                onLogout={onLogout}
             />
         </div>
     );
