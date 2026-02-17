@@ -30,7 +30,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
         <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center pointer-events-none">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" onClick={onClose} />
 
-            <div className="bg-white w-full sm:max-w-md sm:rounded-xl rounded-t-2xl shadow-2xl pointer-events-auto flex flex-col max-h-[90vh] animate-in slide-in-from-bottom duration-200">
+            <div className="relative z-10 bg-white w-full sm:max-w-md sm:rounded-xl rounded-t-2xl shadow-2xl pointer-events-auto flex flex-col max-h-[90vh] animate-in slide-in-from-bottom duration-200">
                 <div className="flex justify-between items-center p-4 border-b border-slate-100">
                     <h3 className="font-bold text-lg text-slate-900">{title}</h3>
                     <button onClick={onClose} className="p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200">
