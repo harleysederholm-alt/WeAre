@@ -1,5 +1,6 @@
 'use client';
 
+import { Plus, Check, Trash, ArrowRight, RotateCw } from 'lucide-react';
 import React, { useState } from 'react';
 import { DailyEntryGrid } from '../components/DailyEntryGrid';
 import { ContextSidebar } from '../components/ContextSidebar';
@@ -198,8 +199,9 @@ function Dashboard() {
                 {(activeTab === 'daily' || activeTab === 'waste' || activeTab === 'inventory') && (
                     <button
                         onClick={handleSubmit}
-                        className="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl active:scale-95 text-lg h-14 w-full md:w-auto"
+                        className="bg-slate-900/90 dark:bg-white/90 backdrop-blur-xl text-white dark:text-slate-900 border border-slate-700 dark:border-white/20 px-8 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all shadow-lg hover:shadow-indigo-500/20 active:scale-95 text-lg h-14 w-full md:w-auto flex items-center justify-center gap-3"
                     >
+                        {activeTab === 'daily' && <Check size={24} />}
                         {activeTab === 'daily' ? t('submitDaily') : activeTab === 'waste' ? t('submitWaste') : t('submitInventory')}
                     </button>
                 )}

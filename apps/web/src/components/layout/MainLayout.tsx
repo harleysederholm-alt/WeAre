@@ -228,7 +228,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                         >
                             <Menu size={24} />
                         </button>
-                        <div className="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shadow-sm shadow-indigo-500/20">
+                        <div className="w-10 h-10 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-slate-200 dark:border-slate-700 flex items-center justify-center font-bold text-slate-700 dark:text-slate-200 shadow-sm">
                             {activeRestaurant?.name?.charAt(0) || 'W'}
                         </div>
                         <h1 className="font-bold text-slate-900 dark:text-white truncate max-w-[150px]">{activeRestaurant?.name}</h1>
@@ -244,7 +244,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                         </button>
 
                         {/* User Avatar */}
-                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">
+                        <div className="w-10 h-10 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 shadow-sm">
                             {user?.email?.charAt(0).toUpperCase()}
                         </div>
                     </div>

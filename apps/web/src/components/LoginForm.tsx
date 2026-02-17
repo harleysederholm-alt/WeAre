@@ -43,7 +43,7 @@ export const LoginForm: React.FC = () => {
 
                     <button
                         onClick={handleLogin}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold py-4 px-4 rounded-xl shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300 border border-transparent dark:border-white/20 backdrop-blur-sm"
                     >
                         Sign In
                     </button>
