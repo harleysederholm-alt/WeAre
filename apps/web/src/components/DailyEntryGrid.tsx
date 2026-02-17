@@ -114,9 +114,9 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
 
     return (
         <div className="space-y-8">
-            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('daily')} - {t('salesReport')}</h2>
-                <div className="ag-theme-quartz h-[200px] w-full hidden md:block">
+            <section className="bg-white dark:bg-slate-900/50 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 backdrop-blur-sm">
+                <h2 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100">{t('daily')} - {t('salesReport')}</h2>
+                <div className="ag-theme-quartz dark:ag-theme-quartz-dark h-[200px] w-full hidden md:block">
                     <AgGridReact
                         rowData={salesData}
                         columnDefs={salesDefs}
@@ -130,14 +130,14 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
                 />
             </section>
 
-            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('cashTips')}</h2>
+            <section className="bg-white dark:bg-slate-900/50 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 backdrop-blur-sm">
+                <h2 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100">{t('cashTips')}</h2>
                 <div className="flex items-center gap-4">
                     <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">€</span>
                         <input
                             type="number"
-                            className="pl-8 pr-4 py-2 border rounded-lg w-32 font-mono"
+                            className="pl-8 pr-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg w-32 font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-white"
                             placeholder="0.00"
                             value={cashTips}
                             onChange={(e) => setCashTips(Number(e.target.value))}
@@ -147,14 +147,14 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
                 </div>
             </section>
 
-            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('vouchers')}</h2>
+            <section className="bg-white dark:bg-slate-900/50 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 backdrop-blur-sm">
+                <h2 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100">{t('vouchers')}</h2>
                 <div className="flex items-center gap-4">
                     <div className="relative">
                         <label className="block text-xs text-slate-400 mb-1">{t('voucherCount')}</label>
                         <input
                             type="number"
-                            className="px-3 py-2 border rounded-lg w-24 font-mono"
+                            className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg w-24 font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-white"
                             placeholder="0"
                             value={voucherCount}
                             onChange={(e) => setVoucherCount(Number(e.target.value))}
@@ -165,7 +165,7 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
                         <span className="absolute left-2 top-[29px] text-slate-500">€</span>
                         <input
                             type="number"
-                            className="pl-6 pr-3 py-2 border rounded-lg w-32 font-mono"
+                            className="pl-6 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg w-32 font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-white"
                             placeholder="0"
                             value={voucherValue}
                             onChange={(e) => setVoucherValue(Number(e.target.value))}
@@ -174,9 +174,9 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
                 </div>
             </section>
 
-            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('roster')}</h2>
-                <div className="ag-theme-quartz h-[300px] w-full hidden md:block">
+            <section className="bg-white dark:bg-slate-900/50 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 backdrop-blur-sm">
+                <h2 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100">{t('roster')}</h2>
+                <div className="ag-theme-quartz dark:ag-theme-quartz-dark h-[300px] w-full hidden md:block">
                     <AgGridReact
                         rowData={shiftData}
                         columnDefs={shiftDefs}
