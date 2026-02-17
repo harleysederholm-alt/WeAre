@@ -54,10 +54,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     ];
 
     const hasPermission = (requiredRole: string) => {
+        // DEMO MODE: Allow access to all menus for detailed testing
+        return true;
+
+        /* Original Permission Logic
         if (requiredRole === 'STAFF') return true;
         if (requiredRole === 'MANAGER') return user?.role === 'MANAGER' || user?.role === 'ADMIN';
         if (requiredRole === 'ADMIN') return user?.role === 'ADMIN';
         return false;
+        */
     };
 
     const handleTabChange = (tabId: string) => {
@@ -128,7 +133,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
                     <div className="absolute left-0 top-0 bottom-0 w-[85%] max-w-sm bg-white/95 backdrop-blur-md text-slate-900 shadow-2xl p-6 flex flex-col border-r border-slate-200 animate-in slide-in-from-left duration-300">
                         <div className="flex justify-between items-center mb-8">
-                            <h2 className="text-xl font-bold tracking-tight">Menu</h2>
+                            <img
+                                src="/logo.png"
+                                alt="WeAre Logo"
+                                className="h-10 w-auto object-contain mix-blend-multiply"
+                            />
                             <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2 text-slate-400 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors">
                                 <span className="sr-only">Close</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 12" /></svg>
