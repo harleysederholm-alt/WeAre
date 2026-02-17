@@ -1,11 +1,15 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { getAuditLogs } from '../lib/api';
+import { useLanguage } from '../context/LanguageContext';
 
 interface AuditLogTableProps {
     restaurantId: string;
 }
 
 export const AuditLogTable: React.FC<AuditLogTableProps> = ({ restaurantId }) => {
+    const { t } = useLanguage();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [logs, setLogs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -17,13 +21,13 @@ export const AuditLogTable: React.FC<AuditLogTableProps> = ({ restaurantId }) =>
                 setLoading(false);
             })
             .catch(console.error);
-    }, []);
+    }, [restaurantId]);
 
-    if (loading) return <div>Loading audit logs...</div>;
+    if (loading) return <div>{t('loading')}</div>;
 
     return (
         <div className="space-y-4">
-            <h2 className="text-xl font-bold">Audit Log (System Events)</h2>
+            <h2 className="text-xl font-bold">{t('audit')}</h2>
             <div className="overflow-x-auto rounded-lg border border-slate-200">
                 <table className="w-full text-sm text-left">
                     <thead className="bg-slate-50 text-slate-500 font-medium">

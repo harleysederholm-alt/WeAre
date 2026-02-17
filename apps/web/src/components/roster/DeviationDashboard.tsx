@@ -1,11 +1,15 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { getDeviations, ackDeviation, triggerAnalysis } from '../../lib/api';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface DeviationDashboardProps {
     restaurantId: string;
 }
 
 export const DeviationDashboard: React.FC<DeviationDashboardProps> = ({ restaurantId }) => {
+    const { t } = useLanguage();
     const [deviations, setDeviations] = useState<any[]>([]);
     const [analyzing, setAnalyzing] = useState(false);
 
@@ -55,18 +59,18 @@ export const DeviationDashboard: React.FC<DeviationDashboardProps> = ({ restaura
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
-                <h3 className="font-bold text-lg">Shift Deviations</h3>
+                <h3 className="font-bold text-lg">{t('shiftDeviations')}</h3>
                 <button
                     onClick={runAnalysis}
                     disabled={analyzing}
                     className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded text-sm font-medium hover:bg-indigo-200"
                 >
-                    {analyzing ? 'Analyzing...' : 'Run Analysis (Now)'}
+                    {analyzing ? t('analyzing') : t('runAnalysis')}
                 </button>
             </div>
 
             {deviations.length === 0 ? (
-                <p className="text-slate-500 italic">No deviations found.</p>
+                <p className="text-slate-500 italic">{t('noDeviations')}</p>
             ) : (
                 <div className="space-y-2">
                     {deviations.map(dev => (
@@ -88,7 +92,7 @@ export const DeviationDashboard: React.FC<DeviationDashboardProps> = ({ restaura
                                 onClick={() => handleAck(dev.id)}
                                 className="px-3 py-1 bg-white border border-slate-200 shadow-sm rounded text-sm hover:bg-slate-50"
                             >
-                                Acknowledge
+                                {t('acknowledge')}
                             </button>
                         </div>
                     ))}

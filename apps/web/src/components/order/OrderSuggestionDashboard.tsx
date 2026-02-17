@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { getOrderSuggestions, sendOrder } from '../../lib/api';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Suggestion {
     masterItemName: string;
@@ -23,6 +26,7 @@ interface OrderSuggestionDashboardProps {
 }
 
 export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> = ({ restaurantId }) => {
+    const { t } = useLanguage();
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
     const [loading, setLoading] = useState(false);
@@ -63,7 +67,7 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
     };
 
     const handleSendOrder = async () => {
-        if (draftItems.length === 0) return alert('Draft is empty');
+        if (draftItems.length === 0) return alert(t('yourOrderIsEmpty'));
         setSending(true);
         try {
             await sendOrder({
@@ -73,10 +77,10 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
                 recipientEmail: email,
                 items: draftItems
             }, 'MANAGER');
-            alert('Order Sent!');
+            alert(t('success'));
             setDraftItems([]);
         } catch (err: any) {
-            alert('Error: ' + err.message);
+            alert(`${t('error')}: ` + err.message);
         } finally {
             setSending(false);
         }
@@ -87,22 +91,22 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
             {/* Left: Suggestions */}
             <div className="flex-1 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-slate-800">Review Suggestions</h2>
+                    <h2 className="text-xl font-bold text-slate-800">{t('reviewSuggestions')}</h2>
                     <button onClick={loadSuggestions} className="text-sm text-indigo-600 hover:text-indigo-800">
-                        Refresh
+                        {t('refresh')}
                     </button>
                 </div>
 
-                {loading ? <p>Loading suggestions...</p> : (
+                {loading ? <p>{t('loading')}</p> : (
                     <div className="space-y-4">
-                        {suggestions.length === 0 && <p className="text-slate-500 italic">No suggestions available.</p>}
+                        {suggestions.length === 0 && <p className="text-slate-500 italic">{t('noSuggestions')}</p>}
                         {suggestions.map((s, idx) => (
                             <div key={idx} className="p-4 border border-slate-100 rounded-lg hover:border-indigo-100 transition-colors">
                                 <div className="flex justify-between items-start">
                                     <div>
                                         <h3 className="font-bold text-slate-900">{s.masterItemName}</h3>
                                         <p className="text-xs text-slate-500 mt-1">
-                                            Stock: {s.currentStock} {s.unit} | Demand: {s.projectedDemand.toFixed(1)} | Buffer: {s.buffer.toFixed(1)}
+                                            {t('stockCount')}: {s.currentStock} {s.unit} | Demand: {s.projectedDemand.toFixed(1)} | Buffer: {s.buffer.toFixed(1)}
                                         </p>
                                         <p className="text-xs text-indigo-600 mt-1 font-medium">{s.reason}</p>
                                     </div>
@@ -114,7 +118,7 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
                                             onClick={() => addToDraft(s)}
                                             className="mt-2 text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-100"
                                         >
-                                            + Add
+                                            + {t('next')}
                                         </button>
                                     </div>
                                 </div>
@@ -126,7 +130,7 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
 
             {/* Right: Draft Order */}
             <div className="w-full md:w-1/3 bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col">
-                <h2 className="text-xl font-bold text-slate-800 mb-4">Draft Order</h2>
+                <h2 className="text-xl font-bold text-slate-800 mb-4">{t('draftOrder')}</h2>
 
                 <div className="mb-4 space-y-2">
                     <input
@@ -144,7 +148,7 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
                 </div>
 
                 <div className="flex-1 overflow-y-auto mb-4 space-y-2">
-                    {draftItems.length === 0 && <p className="text-slate-400 text-center py-8">Your order is empty.</p>}
+                    {draftItems.length === 0 && <p className="text-slate-400 text-center py-8">{t('yourOrderIsEmpty')}</p>}
                     {draftItems.map((item, idx) => (
                         <div key={idx} className="flex justify-between items-center bg-white p-3 rounded shadow-sm">
                             <span className="text-sm font-medium">{item.name}</span>
@@ -161,7 +165,7 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
                     disabled={sending || draftItems.length === 0}
                     className={`w-full py-3 rounded-lg font-bold text-white shadow transition-all ${sending ? 'bg-slate-400' : 'bg-emerald-600 hover:bg-emerald-700'}`}
                 >
-                    {sending ? 'Sending...' : `Send Order (${draftItems.length})`}
+                    {sending ? t('loading') : `${t('sendOrder')} (${draftItems.length})`}
                 </button>
             </div>
         </div>

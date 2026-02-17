@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState, useEffect, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef, ModuleRegistry, CellValueChangedEvent } from 'ag-grid-community';
 import {
@@ -11,6 +13,7 @@ import {
     ColumnAutoSizeModule
 } from 'ag-grid-community';
 import { ingestEmail, getPendingPurchases, confirmPurchase } from '../../lib/api';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Register modules
 ModuleRegistry.registerModules([
@@ -30,6 +33,7 @@ interface PurchaseDashboardProps {
 }
 
 export const PurchaseDashboard: React.FC<PurchaseDashboardProps> = ({ restaurantId }) => {
+    const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<'ingest' | 'review'>('review');
     const [pendingOrders, setPendingOrders] = useState<any[]>([]);
 
@@ -64,14 +68,14 @@ export const PurchaseDashboard: React.FC<PurchaseDashboardProps> = ({ restaurant
                 subject: 'Order #123',
                 body: emailText
             });
-            setIngestStatus('Email ingested successfully!');
+            setIngestStatus(t('success'));
             setEmailText('');
             setTimeout(() => {
                 setIngestStatus('');
                 setActiveTab('review');
             }, 1000);
         } catch (err: any) {
-            setIngestStatus(`Error: ${err.message}`);
+            setIngestStatus(`${t('error')}: ${err.message}`);
         }
     };
 
@@ -84,19 +88,19 @@ export const PurchaseDashboard: React.FC<PurchaseDashboardProps> = ({ restaurant
         if (!selectedOrder) return;
         try {
             await confirmPurchase(selectedOrder.id, selectedOrder.orderDate, reviewItems);
-            alert('Order confirmed and added to ledger!');
+            alert(t('success'));
             setSelectedOrder(null);
             loadPending();
         } catch (err: any) {
-            alert(`Error confirming: ${err.message}`);
+            alert(`${t('error')}: ${err.message}`);
         }
     };
 
     // Grid Defs
-    const colDefs: ColDef[] = [
-        { field: 'name', headerName: 'Item', flex: 2, editable: true },
+    const colDefs: ColDef[] = useMemo(() => [
+        { field: 'name', headerName: t('item'), flex: 2, editable: true },
         { field: 'ean', headerName: 'EAN', flex: 1, editable: true },
-        { field: 'quantity', headerName: 'Qty', width: 90, editable: true, type: 'numericColumn' },
+        { field: 'quantity', headerName: t('quantity'), width: 90, editable: true, type: 'numericColumn' },
         { field: 'unitPrice', headerName: 'Price', width: 90, editable: true, type: 'numericColumn' },
         {
             field: 'total',
@@ -104,7 +108,7 @@ export const PurchaseDashboard: React.FC<PurchaseDashboardProps> = ({ restaurant
             width: 90,
             valueGetter: params => (params.data.quantity * params.data.unitPrice).toFixed(2)
         }
-    ];
+    ], [t]);
 
     return (
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 min-h-[600px] flex flex-col">
@@ -114,13 +118,13 @@ export const PurchaseDashboard: React.FC<PurchaseDashboardProps> = ({ restaurant
                     onClick={() => setActiveTab('review')}
                     className={`px-6 py-3 font-medium text-sm transition-colors ${activeTab === 'review' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}
                 >
-                    Review Pending ({pendingOrders.length})
+                    {t('pendingPurchases')} ({pendingOrders.length})
                 </button>
                 <button
                     onClick={() => setActiveTab('ingest')}
                     className={`px-6 py-3 font-medium text-sm transition-colors ${activeTab === 'ingest' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}
                 >
-                    Simulate Email Ingest
+                    {t('ingestEmail')}
                 </button>
             </div>
 
@@ -149,7 +153,7 @@ export const PurchaseDashboard: React.FC<PurchaseDashboardProps> = ({ restaurant
                                 onClick={handleIngest}
                                 className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
                             >
-                                Ingest Email
+                                {t('process')}
                             </button>
                         </div>
                     </div>
@@ -189,7 +193,7 @@ export const PurchaseDashboard: React.FC<PurchaseDashboardProps> = ({ restaurant
                                             onClick={handleConfirm}
                                             className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 shadow-sm"
                                         >
-                                            Confirm & Add to Ledger
+                                            {t('confirm')}
                                         </button>
                                     </div>
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SettingsModalProps {
     isOpen: boolean;
@@ -8,6 +9,7 @@ interface SettingsModalProps {
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, onSave, initialIncludeManagers }) => {
+    const { t } = useLanguage();
     const [includeManagers, setIncludeManagers] = useState(initialIncludeManagers);
 
     useEffect(() => {
@@ -19,12 +21,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
-                <h2 className="text-xl font-bold mb-4">Restaurant Settings</h2>
+                <h2 className="text-xl font-bold mb-4">{t('settings')}</h2>
                 <div className="space-y-4 mb-6">
                     <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border">
                         <div>
-                            <h3 className="font-medium text-slate-900">Manager Tips Policy</h3>
-                            <p className="text-sm text-slate-500">Include managers in daily tip distribution?</p>
+                            <h3 className="font-medium text-slate-900">{t('managerTipsPolicy')}</h3>
+                            <p className="text-sm text-slate-500">{t('includeManagers')}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input
@@ -42,13 +44,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
                         onClick={onClose}
                         className="px-4 py-2 text-slate-600 hover:text-slate-800"
                     >
-                        Cancel
+                        {t('cancel')}
                     </button>
                     <button
                         onClick={() => onSave(includeManagers)}
                         className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-bold shadow-lg"
                     >
-                        Save Settings
+                        {t('saveSettings')}
                     </button>
                 </div>
             </div>

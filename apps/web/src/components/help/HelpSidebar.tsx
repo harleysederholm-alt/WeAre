@@ -3,40 +3,57 @@ import { useHelp } from '../../context/HelpContext';
 import { useAuth } from '../../context/AuthContext';
 
 // Mock API Call
-const fetchHelpArticles = async (context: string, restaurantId: string) => {
-    // In real app: fetch(`/help?context=${context}&restaurantId=${restaurantId}`)
-    // Mocking response based on context
-    if (context === 'daily_sales') {
-        return [{
-            id: '1',
-            title_fi: 'Myynnin syöttäminen',
-            body_fi: 'Syötä päivän kokonaismyynti Z-raportista.',
-            steps_fi: ['Ota Z-raportti', 'Etsi rivi "Kokonaismyynti"', 'Syötä summa'],
-            layer: 'GLOBAL'
-        }];
+const fetchHelpArticles = async (context: string, restaurantId: string, query?: string) => {
+    try {
+        const params = new URLSearchParams();
+        if (context && context !== 'global') params.append('context', context);
+        if (restaurantId) params.append('restaurantId', restaurantId);
+        if (query) params.append('query', query);
+
+        const res = await fetch(`http://localhost:3001/api/help?${params.toString()}`);
+        if (!res.ok) throw new Error('Failed to fetch help');
+        return await res.json();
+    } catch (error) {
+        console.error('Error fetching help:', error);
+        return [];
     }
-    if (context === 'waste_log') {
-        return [{
-            id: '2',
-            title_fi: 'Hävikin kirjaus',
-            body_fi: 'Kirjaa kaikki hävikki.',
-            steps_fi: ['Valitse tuote', 'Syötä määrä', 'Valitse syy'],
-            layer: 'GLOBAL'
-        }];
-    }
-    return [];
 };
 
-export const HelpSidebar: React.FC = () => {
+interface HelpSidebarProps {
+    onAddNote?: () => void;
+}
+
+export const HelpSidebar: React.FC<HelpSidebarProps> = ({ onAddNote }) => {
     const { isSidebarOpen, toggleSidebar, currentContext, language } = useHelp();
     const { user } = useAuth();
     const [articles, setArticles] = useState<any[]>([]);
 
+    const [showSearch, setShowSearch] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
     useEffect(() => {
         if (isSidebarOpen) {
+            // Initial fetch by context
             fetchHelpArticles(currentContext, 'restaurant-1').then(setArticles);
         }
     }, [isSidebarOpen, currentContext]);
+
+    const handleSearch = async () => {
+        // Toggle search mode or execute search
+        if (!showSearch) {
+            setShowSearch(true);
+        } else {
+            // Execute search
+            const results = await fetchHelpArticles('global', 'restaurant-1', searchQuery);
+            setArticles(results);
+        }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
 
     if (!isSidebarOpen) {
         return (
@@ -58,15 +75,40 @@ export const HelpSidebar: React.FC = () => {
             </div>
 
             <div className="p-4 flex-1 overflow-y-auto space-y-4">
-                <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
-                    Context: {currentContext}
+                <div className="flex justify-between items-center text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                    <span>Context: {currentContext}</span>
+                    <button onClick={() => setShowSearch(!showSearch)} className="text-indigo-600 hover:text-indigo-800">
+                        {showSearch ? 'Hide Search' : 'Search'}
+                    </button>
                 </div>
+
+                {showSearch && (
+                    <div className="flex gap-2 mb-2">
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Search guides..."
+                            className="flex-1 p-2 text-sm border border-slate-300 rounded"
+                            autoFocus
+                        />
+                        <button onClick={handleSearch} className="px-3 py-1 bg-indigo-600 text-white rounded text-xs font-bold">
+                            GO
+                        </button>
+                    </div>
+                )}
 
                 {articles.length === 0 ? (
                     <div className="text-sm text-slate-500 italic">
                         No specific help for this context.
                         <br />
-                        <button className="text-indigo-600 mt-2 hover:underline">Search all guides</button>
+                        <button
+                            onClick={handleSearch}
+                            className="text-indigo-600 mt-2 hover:underline"
+                        >
+                            Search all guides
+                        </button>
                     </div>
                 ) : (
                     articles.map(article => (
@@ -95,7 +137,10 @@ export const HelpSidebar: React.FC = () => {
 
                 {user?.role === 'MANAGER' && (
                     <div className="pt-4 border-t">
-                        <button className="w-full py-2 border-2 border-dashed border-slate-300 text-slate-500 rounded hover:border-indigo-300 hover:text-indigo-600 transition-colors text-sm">
+                        <button
+                            onClick={onAddNote}
+                            className="w-full py-2 border-2 border-dashed border-slate-300 text-slate-500 rounded hover:border-indigo-300 hover:text-indigo-600 transition-colors text-sm"
+                        >
                             + Add Note for this screen
                         </button>
                     </div>

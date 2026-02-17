@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { getReports, downloadPdf } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ReportsDashboardProps {
     restaurantId: string;
@@ -10,6 +11,7 @@ interface ReportsDashboardProps {
 
 export const ReportsDashboard: React.FC<ReportsDashboardProps> = ({ restaurantId }) => {
     const { user } = useAuth();
+    const { t } = useLanguage();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [reports, setReports] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -26,7 +28,7 @@ export const ReportsDashboard: React.FC<ReportsDashboardProps> = ({ restaurantId
                     setLoading(false);
                 });
         }
-    }, [user]);
+    }, [user, restaurantId]);
 
     const handleDownload = async (date: string) => {
         try {
@@ -43,18 +45,18 @@ export const ReportsDashboard: React.FC<ReportsDashboardProps> = ({ restaurantId
         }
     };
 
-    if (loading) return <div>Loading reports...</div>;
+    if (loading) return <div>{t('loading')}</div>;
 
     return (
         <div className="space-y-6">
-            <h2 className="text-xl font-bold">Johdon Raportit (Management Reports)</h2>
+            <h2 className="text-xl font-bold">{t('reports')}</h2>
 
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border border-gray-300">
                     <thead className="bg-gray-100">
                         <tr>
-                            <th className="py-2 px-4 border-b text-left">Date</th>
-                            <th className="py-2 px-4 border-b text-right">Total Sales (€)</th>
+                            <th className="py-2 px-4 border-b text-left">{t('date')}</th>
+                            <th className="py-2 px-4 border-b text-right">{t('totalSales')} (€)</th>
                             <th className="py-2 px-4 border-b text-right">Cash (€)</th>
                             <th className="py-2 px-4 border-b text-right">Tips (€)</th>
                             <th className="py-2 px-4 border-b text-right text-red-600">Waste Cost (€)</th>
@@ -74,14 +76,14 @@ export const ReportsDashboard: React.FC<ReportsDashboardProps> = ({ restaurantId
                                         onClick={() => handleDownload(row.date)}
                                         className="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
                                     >
-                                        Download PDF
+                                        {t('downloadPdf')}
                                     </button>
                                 </td>
                             </tr>
                         ))}
                         {reports.length === 0 && (
                             <tr>
-                                <td colSpan={6} className="py-4 text-center text-gray-500">No reports found. Submit EOD to see data here.</td>
+                                <td colSpan={6} className="py-4 text-center text-gray-500">{t('noSuggestions')}</td>
                             </tr>
                         )}
                     </tbody>

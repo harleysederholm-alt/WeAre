@@ -1,31 +1,14 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from 'react';
-import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import { AgGridReact } from 'ag-grid-react';
 import { ColDef, ModuleRegistry, CellFocusedEvent } from 'ag-grid-community';
-import {
-    ClientSideRowModelModule,
-    ValidationModule,
-    TextEditorModule,
-    SelectEditorModule,
-    CellStyleModule,
-    ColumnAutoSizeModule
-} from 'ag-grid-community';
+import { themeQuartz } from 'ag-grid-community';
+import '../lib/agGridRegistry'; // Import registry to ensure modules are registered
 
-// Register modules
-ModuleRegistry.registerModules([
-    ClientSideRowModelModule,
-    ValidationModule,
-    TextEditorModule,
-    SelectEditorModule,
-    CellStyleModule,
-    ColumnAutoSizeModule
-]);
-
-// Styles
-import 'ag-grid-community/styles/ag-theme-quartz.css';
-
-import { useHelp } from '../context/HelpContext';
+import { useLanguage } from '../context/LanguageContext';
+import { MobileSalesList, MobileRosterList } from './mobile/DailyEntryMobileList';
+import { EditEntryModal } from './mobile/EditEntryModal';
 
 interface DailyEntryGridProps {
     restaurantId: string;
@@ -35,139 +18,186 @@ interface DailyEntryGridProps {
 }
 
 export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, date, onFocusChange, onDataChange }) => {
-    const { setContext } = useHelp();
+    const { t } = useLanguage();
 
-    React.useEffect(() => {
-        setContext('daily_sales');
-    }, [setContext]);
-
-    // Mock Data for scaffolding
+    // Mock Data
     const [salesData, setSalesData] = useState([
         { category: 'Food', amount: 0, tax: 14 },
         { category: 'Alcohol', amount: 0, tax: 24 },
+        { category: 'Non-Alcohol', amount: 0, tax: 14 },
     ]);
 
     const [shiftData, setShiftData] = useState([
-        { name: 'Alice', type: 'Normaali', start: '10:00', end: '16:00', hours: 6 },
-        { name: 'Bob', type: 'Muu', start: '16:00', end: '22:00', hours: 6 },
+        { name: 'Matti Meikäläinen', role: 'CHEF', start: '10:00', end: '18:00', type: 'Normaali' },
+        { name: 'Teppo Testaaja', role: 'WAITER', start: '16:00', end: '23:30', type: 'Normaali' },
     ]);
-
-    const salesDefs: ColDef[] = [
-        { field: 'category', editable: false },
-        { field: 'amount', editable: true, valueParser: params => Number(params.newValue) },
-        { field: 'tax', editable: false },
-    ];
-
-    const shiftDefs: ColDef[] = [
-        { field: 'name', editable: true },
-        {
-            field: 'type',
-            editable: true,
-            cellEditor: 'agSelectCellEditor',
-            cellEditorParams: { values: ['Normaali', 'Poissa', 'Muu'] }
-        },
-        { field: 'start', editable: true },
-        { field: 'end', editable: true },
-        { field: 'hours', editable: true, valueParser: params => Number(params.newValue) },
-    ];
 
     const [cashTips, setCashTips] = useState<number>(0);
     const [voucherCount, setVoucherCount] = useState<number>(0);
     const [voucherValue, setVoucherValue] = useState<number>(0);
 
+    // Mobile Edit State
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [editType, setEditType] = useState<'SALES' | 'ROSTER'>('SALES');
+    const [editItem, setEditItem] = useState<any>(null);
+    const [editIndex, setEditIndex] = useState<number>(-1);
+
+    const handleEditSale = (item: any) => {
+        setEditType('SALES');
+        setEditItem(item);
+        setEditModalOpen(true);
+    };
+
+    const handleEditShift = (item: any, index: number) => {
+        setEditType('ROSTER');
+        setEditItem(item);
+        setEditIndex(index);
+        setEditModalOpen(true);
+    };
+
+    const handleSaveEdit = (newValue: any) => {
+        if (editType === 'SALES') {
+            const newSales = salesData.map(s => s.category === newValue.category ? newValue : s);
+            setSalesData(newSales);
+        } else {
+            const newShifts = [...shiftData];
+            newShifts[editIndex] = newValue;
+            setShiftData(newShifts);
+        }
+        setEditModalOpen(false);
+    };
+
+    const salesDefs = useMemo<ColDef[]>(() => [
+        { field: 'category', headerName: 'Category', editable: false, flex: 1 },
+        {
+            field: 'amount',
+            headerName: t('totalSales') + ' (€)',
+            editable: true,
+            type: 'numericColumn',
+            valueParser: (params) => Number(params.newValue),
+            flex: 1
+        },
+        {
+            field: 'tax',
+            headerName: 'ALV / Tax (%)',
+            editable: false,
+            width: 100
+        }
+    ], [t]);
+
+    const shiftDefs = useMemo<ColDef[]>(() => [
+        { field: 'name', headerName: 'Employee', editable: true, flex: 2 },
+        { field: 'role', headerName: 'Role', editable: true, flex: 1 },
+        { field: 'start', headerName: 'Start', editable: true, flex: 1 },
+        { field: 'end', headerName: 'End', editable: true, flex: 1 },
+        {
+            field: 'type',
+            headerName: 'Type',
+            editable: true,
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: { values: ['Normaali', 'Muu', 'Poissa'] },
+            flex: 1
+        },
+    ], []);
+
     const onCellFocused = useCallback((event: CellFocusedEvent) => {
-        // Determine context based on column/row
         const col = event.column;
         if (!col) return;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const colId = typeof col === 'string' ? col : (col as any).getColId();
-
-        let helpText = "";
-        if (colId === 'type') {
-            helpText = "Shift Type: 'Normaali' earns tips. 'Muu' is for training, 'Poissa' is sick leave.";
-        } else if (colId === 'amount') {
-            helpText = "Enter gross sales including VAT.";
-        } else {
-            helpText = `Editing ${colId}...`;
-        }
-
-        onFocusChange(helpText);
+        onFocusChange(`DAILY: ${colId}`);
     }, [onFocusChange]);
 
-    // Mock data change to parent
-    React.useEffect(() => {
+    useEffect(() => {
         onDataChange({ sales: salesData, shifts: shiftData, cashTips, voucherCount, voucherValue });
     }, [salesData, shiftData, cashTips, voucherCount, voucherValue, onDataChange]);
 
     return (
         <div className="space-y-8">
-            <div className="ag-theme-quartz" style={{ height: 200, width: '100%' }}>
-                <h3 className="font-bold mb-2">Myynti (Sales)</h3>
-                <AgGridReact
-                    rowData={salesData}
-                    columnDefs={salesDefs}
-                    onCellFocused={onCellFocused}
+            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('daily')} - {t('salesReport')}</h2>
+                <div className="ag-theme-quartz h-[200px] w-full hidden md:block">
+                    <AgGridReact
+                        rowData={salesData}
+                        columnDefs={salesDefs}
+                        onCellFocused={onCellFocused}
+                        theme={themeQuartz}
+                    />
+                </div>
+                <MobileSalesList
+                    salesData={salesData}
+                    onEdit={handleEditSale}
                 />
-            </div>
+            </section>
 
-            {/* Cash Tips Input */}
-            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                <h3 className="font-bold mb-2 text-slate-700">Käteiset Tipit (Cash Tips)</h3>
+            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 className="text-lg font-bold mb-4 text-slate-800">Käteiset Tipit (Cash Tips)</h2>
                 <div className="flex items-center gap-4">
                     <div className="relative">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">€</span>
                         <input
                             type="number"
-                            className="pl-8 pr-4 py-2 border rounded-md w-32 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                            className="pl-8 pr-4 py-2 border rounded-lg w-32 font-mono"
+                            placeholder="0.00"
                             value={cashTips}
                             onChange={(e) => setCashTips(Number(e.target.value))}
-                            onFocus={() => onFocusChange("Enter total cash tips found in the drawer.")}
+                            onFocus={() => onFocusChange('CASH_TIPS')}
                         />
                     </div>
-                    <p className="text-sm text-slate-500">
-                        Total cash tips to be distributed among eligible staff.
-                    </p>
                 </div>
-            </div>
+            </section>
 
-            {/* Vouchers Input */}
-            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                <h3 className="font-bold mb-2 text-slate-700">Lounasetelit (Vouchers)</h3>
-                <div className="flex items-center gap-8">
-                    <div className="flex flex-col">
-                        <label className="text-xs text-slate-500 mb-1">Count (kpl)</label>
+            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 className="text-lg font-bold mb-4 text-slate-800">Lounasetelit (Vouchers)</h2>
+                <div className="flex items-center gap-4">
+                    <div className="relative">
+                        <label className="block text-xs text-slate-400 mb-1">Count (kpl)</label>
                         <input
                             type="number"
-                            className="px-3 py-2 border rounded-md w-24 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                            className="px-3 py-2 border rounded-lg w-24 font-mono"
+                            placeholder="0"
                             value={voucherCount}
                             onChange={(e) => setVoucherCount(Number(e.target.value))}
-                            onFocus={() => onFocusChange("Enter number of physical vouchers received.")}
                         />
                     </div>
-                    <div className="flex flex-col">
-                        <label className="text-xs text-slate-500 mb-1">Total Value (€)</label>
-                        <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">€</span>
-                            <input
-                                type="number"
-                                className="pl-8 pr-4 py-2 border rounded-md w-32 focus:outline-none focus:ring-2 focus:ring-slate-400"
-                                value={voucherValue}
-                                onChange={(e) => setVoucherValue(Number(e.target.value))}
-                                onFocus={() => onFocusChange("Enter total monetary value of vouchers.")}
-                            />
-                        </div>
+                    <div className="relative">
+                        <label className="block text-xs text-slate-400 mb-1">Total Value (€)</label>
+                        <span className="absolute left-2 top-[29px] text-slate-500">€</span>
+                        <input
+                            type="number"
+                            className="pl-6 pr-3 py-2 border rounded-lg w-32 font-mono"
+                            placeholder="0"
+                            value={voucherValue}
+                            onChange={(e) => setVoucherValue(Number(e.target.value))}
+                        />
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div className="ag-theme-quartz" style={{ height: 300, width: '100%' }}>
-                <h3 className="font-bold mb-2">Työvuorot (Shifts)</h3>
-                <AgGridReact
-                    rowData={shiftData}
-                    columnDefs={shiftDefs}
-                    onCellFocused={onCellFocused}
+            <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 className="text-lg font-bold mb-4 text-slate-800">{t('roster')}</h2>
+                <div className="ag-theme-quartz h-[300px] w-full hidden md:block">
+                    <AgGridReact
+                        rowData={shiftData}
+                        columnDefs={shiftDefs}
+                        onCellFocused={onCellFocused}
+                        theme={themeQuartz}
+                    />
+                </div>
+                <MobileRosterList
+                    shifts={shiftData}
+                    onEdit={handleEditShift}
                 />
-            </div>
+            </section>
+
+            <EditEntryModal
+                isOpen={editModalOpen}
+                onClose={() => setEditModalOpen(false)}
+                title={editType === 'SALES' ? editItem?.category : 'Edit Shift'}
+                initialValue={editItem}
+                onSave={handleSaveEdit}
+                type={editType}
+            />
         </div>
     );
 };

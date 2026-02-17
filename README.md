@@ -1,51 +1,107 @@
-# Restaurant Operations System (Project WeAre)
 
-A comprehensive system for restaurant operations, including Daily Reporting, Tips Calculation, Waste Management, and Inventory. Built with **NestJS** (Backend) and **Next.js** (Frontend) in a Turborepo monorepo.
+# WeAre – Professional Restaurant Operations Platform
 
-## Features
-- **Daily Reporting**: Enter sales, cash, and shifts.
-- **Tips Calculation**: Automated logic for distributing tips.
-- **Waste Management**: Log wasted items with frozen historical costs.
-- **Inventory**: Track stock levels (`Inventaario`).
-- **Reporting**: Aggregated views for management (CQRS Read Models).
-- **Authentication**: Role-Based Access Control (Mock: Staff/Manager).
+![WeAre Dashboard](https://github.com/harleysederholm-alt/WeAre/raw/main/docs/assets/dashboard.png)
 
-## Stack
-- **Frontend**: Next.js 16, React, Tailwind CSS, AG Grid, Shadcn/UI.
-- **Backend**: NestJS, TypeORM, PostgreSQL, Event Sourcing.
-- **Infrastructure**: Docker, Redis.
+**WeAre** is an enterprise-grade Operations Support System (OSS) designed specifically for high-volume restaurant groups. It replaces fragmented spreadsheets and legacy back-office tools with a unified, event-sourced truth for Daily Logs, Tips, Inventory, Shifts, and Reporting.
 
-## Getting Started (Development)
+**Version:** 0.4 (Feature Complete Beta)
+**Live Demo:** [https://we-are-web-omega.vercel.app](https://we-are-web-omega.vercel.app)
 
-1.  **Prerequisites**: Node.js 18+, Docker (for DB/Redis).
-2.  **Start Infrastructure**:
+---
+
+## 🚀 Key Features
+
+*   **Daily Journal (Päiväkirja):**
+    *   Unified view of Sales, Tips, Vouchers, and Staff Shifts.
+    *   **Automated Z-Report Import** triggers automatic accounting entries.
+    *   **EOD Lock & PDF Generation:** Secure end-of-day commits with audit trails.
+
+*   **Advanced Tips System:**
+    *   **€20 Rule Enforcement:** Intelligent validation for cash payouts in multiples of 20€.
+    *   **Full Settlement Mode:** Manager overrides for finalizing staff balances.
+    *   **Transparent Pooling:** Algorithmically distributed tips based on verified hours.
+
+*   **Inventory & Waste:**
+    *   **Template-Based Counting:** Validates submissions against required items to prevent partial counts.
+    *   **Purchase Order Integration:** Ingests email orders and updates theoretical stock automatically.
+    *   **Waste Tracking:** Granular logging with reason codes (Spoilage, Drops, etc.).
+
+*   **Enterprise Architecture:**
+    *   **Event Sourcing (Ledger Truth):** Every action is an immutable event in the `EventEntity` table.
+    *   **Role-Based Access Control (RBAC):** Strict separation between STAFF and MANAGER actions.
+    *   **Multi-Tenancy:** Single instance supports multiple restaurant units securely.
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend:**
+*   **Framework:** Next.js 15 (App Router, Turbopack)
+*   **Language:** TypeScript
+*   **Styling:** Tailwind CSS (Custom "White Glass" Theme)
+*   **Grids:** AG Grid Enterprise (v35+)
+*   **State:** React Context + SWR
+
+**Backend:**
+*   **Framework:** NestJS (Modular Monolith)
+*   **Database:** PostgreSQL (with TypeORM)
+*   **Architecture:** CQRS + Event Sourcing
+*   **PDF Generation:** PDFMake
+
+---
+
+## 🏗 Architecture Overview
+
+WeAre uses a strict **Event Sourcing** pattern. We do not store "current state" as the primary source of truth; we store **events**.
+
+1.  **Command:** User initiates an action (e.g., `SubmitInventory`).
+2.  **Validator:** Service checks business rules (e.g., Template Compliance).
+3.  **Event Store:** Valid events are appended to the `ledger_events` stream.
+4.  **Projectors:** Background workers replay events to update Read Models (e.g., `InventoryStock`).
+
+This ensures full auditability, time-travel debugging, and accurate historical reporting.
+
+---
+
+## 📦 Getting Started
+
+### Prerequisites
+*   Node.js 20+
+*   PostgreSQL 16+
+
+### Installation
+
+1.  **Clone the repository**
     ```bash
-    docker compose up -d
+    git clone https://github.com/harleysederholm-alt/WeAre.git
+    cd WeAre
     ```
-3.  **Install Dependencies**:
+
+2.  **Install Dependencies**
     ```bash
     npm install
     ```
-4.  **Run Development Server**:
+
+3.  **Setup Environment**
+    Copy `.env.example` to `.env` and configure DB credentials.
+
+4.  **Run Development Server**
     ```bash
+    # Starts Frontend (3000) and Backend (3001)
     npm run dev
     ```
-    - Frontend: [http://localhost:3000](http://localhost:3000)
-    - Backend: [http://localhost:3001](http://localhost:3001)
 
-## Getting Started (Production)
+---
 
-To run the entire stack in production mode using Docker:
+## 🤝 Contributing
 
-1.  **Build and Run**:
-    ```bash
-    docker compose -f docker-compose.prod.yml up --build -d
-    ```
-    
-2.  **Access the App**:
-    - Open [http://localhost:3000](http://localhost:3000)
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on coding standards, commit messages, and PR processes.
 
-## Architecture
-- **Event Sourcing**: The backend uses an append-only `events` table as the source of truth.
-- **CQRS**: Read models (`daily_report_view`) are built asynchronously by `ProjectorService`.
-- **Monorepo**: Managed by Turborepo.
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+---
+
+© 2026 WeAre Operations Oy. All Rights Reserved.

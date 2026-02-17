@@ -79,9 +79,19 @@ export class InventoryService {
     async submitCount(dto: InventoryCountDto) {
         const { restaurantId, date, items } = dto;
 
-        // Validate (basic)
-        if (!items || items.length === 0) {
-            throw new Error('Cannot submit empty inventory count.');
+        // 1. Get Template for validation
+        const template = await this.getTemplate(restaurantId);
+
+        // 2. Validate all template items are present
+        const templateItemIds = template.items.map(i => i.id);
+        const submittedItemIds = items.map(i => i.itemId);
+
+        const missingItems = templateItemIds.filter(id => !submittedItemIds.includes(id));
+
+        if (missingItems.length > 0) {
+            // In a real app we might allow partial counts, but spec says "Inventory required items validation"
+            // We'll throw an error listing missing items
+            throw new Error(`Inventory submission incomplete. Missing items: ${missingItems.join(', ')}`);
         }
 
         const streamId = `restaurant-${restaurantId}-inventory-${date}`;
@@ -93,7 +103,7 @@ export class InventoryService {
                 restaurantId,
                 date,
                 items,
-                countType: 'FULL_COUNT' // Assuming full count for now
+                countType: 'FULL_COUNT'
             },
             meta: { timestamp: new Date().toISOString(), user: 'system' },
             occurred_at: new Date(),

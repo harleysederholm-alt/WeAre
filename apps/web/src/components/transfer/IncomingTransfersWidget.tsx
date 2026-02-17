@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getPendingTransfers, resolveTransfer } from '../../lib/api';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const IncomingTransfersWidget: React.FC = () => {
+    const { t } = useLanguage();
     const [transfers, setTransfers] = useState<any[]>([]);
 
     const fetchTransfers = async () => {
@@ -24,7 +26,7 @@ export const IncomingTransfersWidget: React.FC = () => {
             await resolveTransfer({ transferId: id, action });
             fetchTransfers(); // Refresh
         } catch (err) {
-            alert('Failed to resolve');
+            alert(t('resolveFailed'));
         }
     };
 
@@ -34,7 +36,7 @@ export const IncomingTransfersWidget: React.FC = () => {
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 animate-pulse">
             <h4 className="font-bold text-amber-800 flex items-center gap-2">
                 <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs border border-amber-200">{transfers.length}</span>
-                Incoming Transfers
+                {t('incomingTransfers')}
             </h4>
             <div className="mt-3 space-y-2">
                 {transfers.map(t => (
@@ -49,13 +51,13 @@ export const IncomingTransfersWidget: React.FC = () => {
                                 onClick={() => handleResolve(t.id, 'ACCEPT')}
                                 className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold hover:bg-emerald-200"
                             >
-                                Accept
+                                {t('accept')}
                             </button>
                             <button
                                 onClick={() => handleResolve(t.id, 'REJECT')}
                                 className="px-3 py-1 bg-red-50 text-red-600 rounded text-xs font-bold hover:bg-red-100"
                             >
-                                Reject
+                                {t('reject')}
                             </button>
                         </div>
                     </div>
