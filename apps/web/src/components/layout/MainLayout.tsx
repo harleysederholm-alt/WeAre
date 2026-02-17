@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
+import { useHelp } from '../../context/HelpContext';
+import { useSwipe } from '../../hooks/useSwipe';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -28,7 +30,16 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
     const { t, language, setLanguage } = useLanguage();
     const { user } = useAuth();
+    const { isHelpMode, toggleHelpMode } = useHelp();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // Swipe Handlers
+    const swipeHandlers = useSwipe({
+        onSwipeRight: () => setIsMobileMenuOpen(true), // Swipe Right (->) opens Left Menu
+        onSwipeLeft: () => !isHelpMode && toggleHelpMode(), // Swipe Left (<-) opens Help
+        edgeOnly: true,
+        edgeThreshold: 50
+    });
 
     const menuItems = [
         { id: 'daily', icon: Calendar, label: t('daily'), requiredRole: 'STAFF' },
@@ -55,7 +66,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     };
 
     return (
-        <div className="flex min-h-screen bg-slate-50">
+        <div
+            className="flex min-h-screen bg-slate-50"
+            onTouchStart={swipeHandlers.onTouchStart}
+            onTouchMove={swipeHandlers.onTouchMove}
+            onTouchEnd={swipeHandlers.onTouchEnd}
+        >
             {/* Desktop Sidebar - White Glass Theme */}
             <aside className="hidden lg:flex flex-col w-64 bg-slate-50/90 backdrop-blur-md border-r border-slate-200 fixed h-full z-20 shadow-sm text-slate-600">
                 <div className="p-6 border-b border-slate-200/50">
