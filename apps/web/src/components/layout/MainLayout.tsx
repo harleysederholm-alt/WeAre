@@ -19,6 +19,7 @@ interface MainLayoutProps {
     availableRestaurants: any[];
     switchRestaurant: (id: string) => void;
     onLogout: () => void;
+    onProfileClick?: () => void;
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({
@@ -28,7 +29,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     activeRestaurant,
     availableRestaurants,
     switchRestaurant,
-    onLogout
+    onLogout,
+    onProfileClick
 }) => {
     const { t, language, setLanguage } = useLanguage();
     const { user } = useAuth();
@@ -246,10 +248,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                             <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full animate-pulse" />
                         </button>
 
-                        {/* User Avatar */}
-                        <div className="w-10 h-10 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 shadow-sm">
+                        {/* User Avatar - Clickable for Profile */}
+                        <button
+                            onClick={onProfileClick}
+                            className="w-10 h-10 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 shadow-sm hover:scale-105 active:scale-95 transition-all cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-700"
+                        >
                             {user?.email?.charAt(0).toUpperCase()}
-                        </div>
+                        </button>
                     </div>
                 </header>
 

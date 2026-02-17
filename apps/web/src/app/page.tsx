@@ -24,6 +24,7 @@ import { AdminDashboard } from '../components/admin/AdminDashboard';
 import { NoteModal } from '../components/NoteModal';
 import { MainLayout } from '../components/layout/MainLayout';
 import { FloatingActionButton } from '../components/layout/FloatingActionButton';
+import { ProfileModal } from '../components/profile/ProfileModal';
 
 import { HelpProvider } from '../context/HelpContext';
 import { HelpSidebar } from '../components/help/HelpSidebar';
@@ -48,6 +49,7 @@ function Dashboard() {
     const [isFlushModalOpen, setIsFlushModalOpen] = useState(false);
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
     // Tips logic
     const [tipsDistribution, setTipsDistribution] = useState<any>(null);
@@ -152,6 +154,7 @@ function Dashboard() {
             availableRestaurants={availableRestaurants}
             switchRestaurant={switchRestaurant}
             onLogout={logout}
+            onProfileClick={() => setIsProfileModalOpen(true)}
         >
             {activeTab === 'daily' ? (
                 <DailyEntryGrid
@@ -246,6 +249,10 @@ function Dashboard() {
             />
             <HelpSidebar onAddNote={() => setIsNoteModalOpen(true)} />
 
+            <ProfileModal
+                isOpen={isProfileModalOpen}
+                onClose={() => setIsProfileModalOpen(false)}
+            />
             <FloatingActionButton
                 activeTab={activeTab}
                 onAction={(action) => {
