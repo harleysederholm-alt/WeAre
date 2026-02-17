@@ -7,6 +7,8 @@ interface HelpContextType {
     toggleSidebar: () => void;
     language: 'fi' | 'en';
     setLanguage: (lang: 'fi' | 'en') => void;
+    isHelpMode: boolean;
+    toggleHelpMode: () => void;
 }
 
 const HelpContext = createContext<HelpContextType | undefined>(undefined);
@@ -15,8 +17,10 @@ export const HelpProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [currentContext, setCurrentContext] = useState<string>('global');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [language, setLanguage] = useState<'fi' | 'en'>('fi');
+    const [isHelpMode, setIsHelpMode] = useState(false);
 
     const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
+    const toggleHelpMode = () => setIsHelpMode(prev => !prev);
 
     return (
         <HelpContext.Provider value={{
@@ -25,7 +29,9 @@ export const HelpProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             isSidebarOpen,
             toggleSidebar,
             language,
-            setLanguage
+            setLanguage,
+            isHelpMode,
+            toggleHelpMode
         }}>
             {children}
         </HelpContext.Provider>
