@@ -17,7 +17,12 @@ export const ChangelogModal: React.FC = () => {
     const checkStatus = async () => {
         try {
             const status = await getChangelogStatus();
-            if (status.requiresAck) {
+
+            // In production, check if we've already acknowledged this version
+            const lastAck = localStorage.getItem('weare_last_ack_version');
+            const isNewVersion = status.currentVersion !== lastAck;
+
+            if (status.requiresAck && isNewVersion) {
                 // Flatten changes from history
                 const allChanges = status.pendingChanges.flatMap((h: any) => h.changes);
                 setChanges(allChanges);
@@ -40,6 +45,7 @@ export const ChangelogModal: React.FC = () => {
     const handleAck = async () => {
         try {
             await ackChangelog(currentVersion.toString());
+            localStorage.setItem('weare_last_ack_version', currentVersion.toString());
             setIsOpen(false);
         } catch (e) {
             alert("Failed to acknowledge");
@@ -66,8 +72,8 @@ export const ChangelogModal: React.FC = () => {
                             {changes.map((c, i) => (
                                 <div key={i} className="flex gap-3 items-start">
                                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${(c.changeType === 'UPDATE' || c.changeType === 'PÄIVITYS') ? 'bg-blue-100 text-blue-700' :
-                                            (c.changeType === 'CREATE' || c.changeType === 'UUSI') ? 'bg-green-100 text-green-700' :
-                                                'bg-red-100 text-red-700'
+                                        (c.changeType === 'CREATE' || c.changeType === 'UUSI') ? 'bg-green-100 text-green-700' :
+                                            'bg-red-100 text-red-700'
                                         }`}>
                                         {c.changeType}
                                     </span>

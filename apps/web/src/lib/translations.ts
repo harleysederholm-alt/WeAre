@@ -147,7 +147,22 @@ export const translations = {
         error: 'Error',
         restaurant: 'Restaurant',
         user: 'User',
-        date: 'Date'
+        date: 'Date',
+        // System Update (Changelog)
+        systemUpdate: 'System Update',
+        ackChanges: 'Please acknowledge the following changes to continue.',
+        noDetails: 'No details available.',
+        ackAndContinue: 'Acknowledge & Continue',
+
+        // Edit Modal
+        editSales: 'Edit Sales',
+        editShift: 'Edit Shift',
+        saveChanges: 'Save Changes',
+
+        // Inventory Messages
+        enterCountHelp: 'Enter physical count.',
+        cannotSubmitNegative: 'Cannot submit negative quantities.',
+        requiredItemsNote: '* Items marked REQ are required.',
     },
     fi: {
         // Navigation

@@ -47,14 +47,15 @@ export const WasteGrid: React.FC<WasteGridProps> = ({ restaurantId, date, onFocu
     ]);
 
     const columnDefs = useMemo<ColDef[]>(() => [
-        { field: 'name', headerName: t('item'), flex: 1 },
+        { field: 'name', headerName: t('item'), flex: 1, minWidth: 140 },
         {
             field: 'quantity',
             headerName: t('quantity'),
             editable: true,
             type: 'numericColumn',
             valueParser: params => Number(params.newValue),
-            width: 100
+            width: 100,
+            minWidth: 100
         },
         {
             field: 'reason',
@@ -64,7 +65,8 @@ export const WasteGrid: React.FC<WasteGridProps> = ({ restaurantId, date, onFocu
             cellEditorParams: {
                 values: ['Spilled', 'Expired', 'Quality', 'Staff Meal', 'Theft']
             },
-            flex: 1
+            flex: 1,
+            minWidth: 120
         }
     ], [t]);
 

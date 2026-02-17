@@ -73,6 +73,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
             field: 'name',
             headerName: t('item'),
             flex: 2,
+            minWidth: 150,
             editable: false,
             cellRenderer: (params: any) => {
                 const isRequired = template?.requiredItems?.includes(params.value) ?? false;
@@ -88,6 +89,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
             field: 'quantity',
             headerName: `${t('stockCount')} (${t('onHand')})`,
             flex: 1,
+            minWidth: 100,
             editable: true,
             type: 'numericColumn',
             valueParser: params => Number(params.newValue),
@@ -95,7 +97,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
                 return { fontWeight: 'bold', backgroundColor: '#f0f9ff' };
             }
         },
-        { field: 'unit', headerName: t('unit'), flex: 0.5, editable: false },
+        { field: 'unit', headerName: t('unit'), flex: 0.5, minWidth: 80, editable: false },
     ], [template, t]);
 
     const onGridReady = (params: GridReadyEvent) => {

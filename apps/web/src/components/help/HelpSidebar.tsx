@@ -70,7 +70,7 @@ export const HelpSidebar: React.FC<HelpSidebarProps> = ({ onAddNote }) => {
     }
 
     return (
-        <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform border-l border-slate-200 flex flex-col">
+        <div className="fixed right-0 top-0 h-full w-full sm:w-96 bg-white/95 backdrop-blur-xl shadow-2xl z-[60] transform transition-transform border-l border-slate-200 flex flex-col">
             <div className="p-4 border-b bg-slate-50 flex justify-between items-center">
                 <h2 className="font-bold text-slate-800">{t('helpTitle')}</h2>
                 <button onClick={toggleSidebar} className="text-slate-500 hover:text-slate-800">✕</button>

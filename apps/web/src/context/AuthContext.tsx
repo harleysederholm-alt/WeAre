@@ -33,9 +33,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Load from local storage on mount
     useEffect(() => {
+        // Disable auto-login in production
+        if (process.env.NODE_ENV === 'production') {
+            return;
+        }
+
         const stored = localStorage.getItem('weare_user');
         if (stored) {
             try {
+                // eslint-disable-next-line react-hooks/exhaustive-deps
                 setUser(JSON.parse(stored));
             } catch (e) {
                 console.error("Failed to parse stored user", e);

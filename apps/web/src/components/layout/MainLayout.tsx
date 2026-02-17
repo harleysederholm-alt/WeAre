@@ -106,7 +106,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             {isMobileMenuOpen && (
                 <div className="fixed inset-0 z-50 lg:hidden">
                     <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
-                    <div className="absolute right-0 top-0 bottom-0 w-[80%] max-w-sm bg-white/95 backdrop-blur-md text-slate-900 shadow-2xl p-6 flex flex-col border-l border-slate-200">
+                    <div className="absolute left-0 top-0 bottom-0 w-[85%] max-w-sm bg-white/95 backdrop-blur-md text-slate-900 shadow-2xl p-6 flex flex-col border-r border-slate-200 animate-in slide-in-from-left duration-300">
                         <div className="flex justify-between items-center mb-8">
                             <h2 className="text-xl font-bold tracking-tight">Menu</h2>
                             <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2 text-slate-400 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors">
