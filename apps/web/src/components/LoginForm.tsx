@@ -16,8 +16,13 @@ export const LoginForm: React.FC = () => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-linear-to-br from-slate-100 to-slate-200 p-4">
             <div className="glass-panel p-8 rounded-2xl shadow-xl w-full max-w-md transition-all">
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">WeAre</h1>
-                    <p className="text-sm text-gray-500 mt-2">Operations Portal</p>
+                    {/* Logo with multiply blend mode to hide white background */}
+                    <img
+                        src="/logo.png"
+                        alt="WeAre Logo"
+                        className="h-32 mx-auto object-contain mix-blend-multiply"
+                    />
+                    <p className="text-sm text-gray-500 mt-4">Operations Portal</p>
                 </div>
 
                 <div className="space-y-6">
