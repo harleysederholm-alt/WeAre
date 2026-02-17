@@ -33,18 +33,18 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none p-4">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" onClick={onClose} />
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center pointer-events-none sm:p-4">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto transition-opacity" onClick={onClose} />
 
-            <div className="relative z-10 bg-white w-full sm:max-w-md rounded-2xl shadow-2xl pointer-events-auto flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+            <div className="relative z-10 bg-white w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl shadow-2xl pointer-events-auto flex flex-col max-h-[85vh] animate-in slide-in-from-bottom duration-300 sm:zoom-in-95">
                 <div className="flex justify-between items-center p-4 border-b border-slate-100">
                     <h3 className="font-bold text-lg text-slate-900">{title}</h3>
-                    <button onClick={onClose} className="p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200">
+                    <button onClick={onClose} className="p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200 transition-colors">
                         <X size={20} />
                     </button>
                 </div>
 
-                <div className="p-6 space-y-6 overflow-y-auto">
+                <div className="p-5 space-y-6 overflow-y-auto">
                     {type === 'SALES' && (
                         <div>
                             <label className="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
@@ -53,18 +53,19 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                             <div className="flex items-center gap-3">
                                 <button
                                     onClick={toggleSign}
-                                    className="p-3 bg-slate-100 rounded-xl text-slate-600 hover:bg-slate-200 active:scale-95 transition-transform"
+                                    className="p-4 bg-slate-100 rounded-xl text-slate-600 hover:bg-slate-200 active:scale-95 transition-transform"
                                     title="Vaihda etumerkki (+/-)"
                                 >
                                     <Minus size={24} />
                                 </button>
                                 <input
                                     type="number"
-                                    className="flex-1 text-3xl font-mono font-bold border-b-2 border-indigo-100 focus:border-indigo-600 outline-none py-2 bg-transparent text-slate-900 placeholder:text-slate-200 text-right"
+                                    className="flex-1 text-4xl font-mono font-bold border-b-2 border-indigo-100 focus:border-indigo-600 outline-none py-2 bg-transparent text-slate-900 placeholder:text-slate-200 text-right"
                                     placeholder="0.00"
                                     value={formData?.amount || ''}
                                     onChange={(e) => setFormData({ ...formData, amount: Number(e.target.value) })}
                                     autoFocus
+                                    inputMode="decimal"
                                 />
                             </div>
                         </div>
@@ -116,10 +117,10 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                     )}
                 </div>
 
-                <div className="p-4 border-t border-slate-100 bg-slate-50 rounded-b-xl sm:rounded-b-xl">
+                <div className="p-4 border-t border-slate-100 bg-slate-50/50 pb-8 sm:pb-4 rounded-b-none sm:rounded-b-2xl">
                     <button
                         onClick={handleSave}
-                        className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg"
+                        className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg hover:bg-slate-800"
                     >
                         <Check size={20} />
                         {t('saveChanges')}
