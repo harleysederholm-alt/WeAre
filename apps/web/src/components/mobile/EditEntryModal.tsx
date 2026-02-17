@@ -13,13 +13,15 @@ interface EditEntryModalProps {
 
 export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose, title, initialValue, onSave, type }) => {
     const { t } = useLanguage();
+    const [mounted, setMounted] = useState(false);
     const [formData, setFormData] = useState<any>(initialValue);
 
     useEffect(() => {
+        setMounted(true);
         setFormData(initialValue);
     }, [initialValue]);
 
-    if (!isOpen) return null;
+    if (!isOpen || !mounted) return null;
 
     const handleSave = () => {
         onSave(formData);
@@ -28,7 +30,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
 
     const toggleSign = () => {
         if (formData?.amount) {
-            setFormData({ ...formData, amount: formData.amount * -1 });
+            setFormData({ ...formData, amount: Number(formData.amount) * -1 });
         }
     };
 
@@ -117,7 +119,10 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                     )}
                 </div>
 
-                <div className="p-4 border-t border-slate-100 bg-slate-50/50 pb-8 sm:pb-4 rounded-b-none sm:rounded-b-2xl">
+                <div
+                    className="p-4 border-t border-slate-100 bg-slate-50/50 pb-8 sm:pb-4 rounded-b-none sm:rounded-b-2xl"
+                    style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
+                >
                     <button
                         onClick={handleSave}
                         className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg hover:bg-slate-800"
