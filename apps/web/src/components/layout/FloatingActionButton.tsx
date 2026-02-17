@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Plus, Check, Trash, ArrowRight, RotateCw } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { HelpSpot } from '../help/HelpSpot';
 
 interface FloatingActionButtonProps {
     activeTab: string;
@@ -33,22 +32,15 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ acti
     const Icon = config.icon;
 
     return (
-        <>
-            <button
-                onClick={() => {
-                    if (navigator.vibrate) navigator.vibrate(20);
-                    onAction(config.action);
-                }}
-                className={`md:hidden fixed bottom-24 right-4 ${config.color} text-white p-4 rounded-2xl shadow-xl shadow-indigo-500/30 flex items-center gap-3 z-30 transition-all active:scale-90 animate-in zoom-in duration-300`}
-            >
-                <Icon size={24} strokeWidth={3} />
-                <span className="font-bold text-sm pr-1">{config.label}</span>
-            </button>
-            <HelpSpot
-                title={config.label}
-                content="Paina tätä nappia tallentaaksesi ja lähettääksesi tiedot. Varmista että kaikki rivit on täytetty."
-                className="fixed bottom-36 right-4 z-40"
-            />
-        </>
+        <button
+            onClick={() => {
+                if (navigator.vibrate) navigator.vibrate(20);
+                onAction(config.action);
+            }}
+            className={`md:hidden fixed bottom-24 right-4 ${config.color} text-white p-4 rounded-2xl shadow-xl shadow-indigo-500/30 flex items-center gap-3 z-30 transition-all active:scale-90 animate-in zoom-in duration-300`}
+        >
+            <Icon size={24} strokeWidth={3} />
+            <span className="font-bold text-sm pr-1">{config.label}</span>
+        </button>
     );
 };

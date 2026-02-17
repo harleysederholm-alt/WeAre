@@ -30,13 +30,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
     const { t, language, setLanguage } = useLanguage();
     const { user } = useAuth();
-    const { isHelpMode, toggleHelpMode } = useHelp();
+    const { toggleSidebar } = useHelp(); // Changed from toggleHelpMode
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Swipe Handlers
     const swipeHandlers = useSwipe({
         onSwipeRight: () => setIsMobileMenuOpen(true), // Swipe Right (->) opens Left Menu
-        onSwipeLeft: () => !isHelpMode && toggleHelpMode(), // Swipe Left (<-) opens Help
+        onSwipeLeft: () => toggleSidebar(), // Swipe Left (<-) opens Help Sidebar
         edgeOnly: true,
         edgeThreshold: 50
     });

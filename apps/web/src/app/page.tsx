@@ -23,7 +23,6 @@ import { AdminDashboard } from '../components/admin/AdminDashboard';
 import { NoteModal } from '../components/NoteModal';
 import { MainLayout } from '../components/layout/MainLayout';
 import { FloatingActionButton } from '../components/layout/FloatingActionButton';
-import { HelpSpot } from '../components/help/HelpSpot';
 
 import { HelpProvider } from '../context/HelpContext';
 import { HelpSidebar } from '../components/help/HelpSidebar';
@@ -154,19 +153,12 @@ function Dashboard() {
             onLogout={logout}
         >
             {activeTab === 'daily' ? (
-                <div className="relative">
-                    <HelpSpot
-                        title="Päiväkirja"
-                        content="Tähän näkymään syötetään päivän myyntiluvut (Ruoka, Alkoholi) suoraan Z-raportista. Muista tallentaa lopuksi!"
-                        className="-top-2 -right-2"
-                    />
-                    <DailyEntryGrid
-                        restaurantId={restaurantId}
-                        date={new Date().toISOString().split('T')[0]}
-                        onDataChange={setReportData}
-                        onFocusChange={(ctx) => setContext(ctx)}
-                    />
-                </div>
+                <DailyEntryGrid
+                    restaurantId={restaurantId}
+                    date={new Date().toISOString().split('T')[0]}
+                    onDataChange={setReportData}
+                    onFocusChange={(ctx) => setContext(ctx)}
+                />
             ) : activeTab === 'admin' ? (
                 <AdminDashboard />
             ) : activeTab === 'waste' ? (
