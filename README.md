@@ -1,8 +1,6 @@
 
 # WeAre – Professional Restaurant Operations Platform
 
-![WeAre Dashboard](https://github.com/harleysederholm-alt/WeAre/raw/main/docs/assets/dashboard.png)
-
 **WeAre** is an enterprise-grade Operations Support System (OSS) designed specifically for high-volume restaurant groups. It replaces fragmented spreadsheets and legacy back-office tools with a unified, event-sourced truth for Daily Logs, Tips, Inventory, Shifts, and Reporting.
 
 **Version:** 0.4 (Feature Complete Beta)
