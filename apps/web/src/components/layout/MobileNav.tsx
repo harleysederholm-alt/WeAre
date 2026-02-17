@@ -42,13 +42,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange, on
                     <Menu size={24} />
                     <span className="text-[10px] font-medium">Menu</span>
                 </button>
-                <button
-                    onClick={onLogout}
-                    className={`flex flex-col items-center justify-center w-full h-full space-y-1 text-red-400 hover:text-red-600`}
-                >
-                    <LogOut size={24} />
-                    <span className="text-[10px] font-medium">{t('logout')}</span>
-                </button>
+
             </div>
         </div>
     );
