@@ -19,6 +19,7 @@ import { submitInventory, getInventoryTemplate } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { ComplianceModal } from './inventory/ComplianceModal';
+import { InventoryMobileList } from './mobile/InventoryMobileList';
 
 // Register modules
 import '../lib/agGridRegistry';
@@ -168,7 +169,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
                 <span className="text-sm text-slate-500">{t('date')}: {new Date().toLocaleDateString()}</span>
             </div>
 
-            <div className="bg-white border rounded-lg shadow-sm overflow-hidden" style={{ height: '500px' }}>
+            <div className="hidden md:block bg-white border rounded-lg shadow-sm overflow-hidden" style={{ height: '500px' }}>
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={colDefs}
@@ -178,6 +179,16 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
                     stopEditingWhenCellsLoseFocus={true}
                 />
             </div>
+
+            <InventoryMobileList
+                items={rowData}
+                template={template}
+                onUpdate={(itemId, quantity) => {
+                    setRowData(prev => prev.map(row =>
+                        row.itemId === itemId ? { ...row, quantity } : row
+                    ));
+                }}
+            />
 
             <div className="flex justify-between items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
                 <p className="text-sm text-slate-500">
