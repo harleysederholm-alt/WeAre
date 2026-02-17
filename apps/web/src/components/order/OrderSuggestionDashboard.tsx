@@ -14,7 +14,7 @@ interface Suggestion {
     reason: string;
 }
 
-interface DraftItem {
+export interface DraftItem {
     name: string;
     quantity: number;
     unit: string;
@@ -23,16 +23,27 @@ interface DraftItem {
 
 interface OrderSuggestionDashboardProps {
     restaurantId: string;
+    draftItems: DraftItem[];
+    setDraftItems: React.Dispatch<React.SetStateAction<DraftItem[]>>;
+    onSendOrder: () => void;
+    sending: boolean;
 }
 
-export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> = ({ restaurantId }) => {
+export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> = ({
+    restaurantId,
+    draftItems,
+    setDraftItems,
+    onSendOrder,
+    sending
+}) => {
     const { t } = useLanguage();
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-    const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
     const [loading, setLoading] = useState(false);
-    const [sending, setSending] = useState(false);
-
-    // Order info
+    // Supplier state kept local for now, effectively read-only for the parent action? 
+    // Wait, parent needs supplier to send order. 
+    // Let's keep supplier local and pass it to onSendOrder? No, onSendOrder takes no args.
+    // Better: Move supplier state to parent too? 
+    // Or: Make onSendOrder accept (supplier, email)?
     const [supplier, setSupplier] = useState('Tukku Oy');
     const [email, setEmail] = useState('orders@tukku.fi');
 
@@ -66,25 +77,7 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
         setDraftItems(prev => prev.filter((_, i) => i !== index));
     };
 
-    const handleSendOrder = async () => {
-        if (draftItems.length === 0) return alert(t('yourOrderIsEmpty'));
-        setSending(true);
-        try {
-            await sendOrder({
-                restaurantId,
-                category: 'Food',
-                supplier,
-                recipientEmail: email,
-                items: draftItems
-            }, 'MANAGER');
-            alert(t('success'));
-            setDraftItems([]);
-        } catch (err: any) {
-            alert(`${t('error')}: ` + err.message);
-        } finally {
-            setSending(false);
-        }
-    };
+    // handleSendOrder moved to parent
 
     return (
         <div className="flex flex-col md:flex-row gap-6 min-h-[600px]">
@@ -154,16 +147,16 @@ export const OrderSuggestionDashboard: React.FC<OrderSuggestionDashboardProps> =
                             <span className="text-sm font-medium">{item.name}</span>
                             <div className="flex items-center gap-2">
                                 <span className="font-bold">{item.quantity} {item.unit}</span>
-                                <button onClick={() => removeFromDraft(idx)} className="text-red-400 hover:text-red-600">✕</button>
+                                <button onClick={() => setDraftItems(prev => prev.filter((_, i) => i !== idx))} className="text-red-400 hover:text-red-600">✕</button>
                             </div>
                         </div>
                     ))}
                 </div>
 
                 <button
-                    onClick={handleSendOrder}
+                    onClick={() => onSendOrder()}
                     disabled={sending || draftItems.length === 0}
-                    className={`w-full py-3 rounded-lg font-bold text-white shadow transition-all ${sending ? 'bg-slate-400' : 'bg-emerald-600 hover:bg-emerald-700'}`}
+                    className={`hidden md:block w-full py-3 rounded-lg font-bold text-white shadow transition-all ${sending ? 'bg-slate-400' : 'bg-emerald-600 hover:bg-emerald-700'}`}
                 >
                     {sending ? t('loading') : `${t('sendOrder')} (${draftItems.length})`}
                 </button>

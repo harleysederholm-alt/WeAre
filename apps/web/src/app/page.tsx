@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { DailyEntryGrid } from '../components/DailyEntryGrid';
 import { ContextSidebar } from '../components/ContextSidebar';
 
-import { submitEod, submitWaste } from '../lib/api';
+import { submitEod, submitWaste, sendOrder } from '../lib/api';
 import { WasteGrid } from '../components/WasteGrid';
 import { ReportsDashboard } from '../components/ReportsDashboard';
 import { InventoryGrid } from '../components/InventoryGrid';
@@ -15,7 +15,7 @@ import { FlushModal } from '../components/tips/FlushModal';
 import { SettingsModal } from '../components/tips/SettingsModal';
 import { AuditLogTable } from '../components/AuditLogTable';
 import { PurchaseDashboard } from '../components/purchase/PurchaseDashboard';
-import { OrderSuggestionDashboard } from '../components/order/OrderSuggestionDashboard';
+import { OrderSuggestionDashboard, DraftItem } from '../components/order/OrderSuggestionDashboard';
 import { ChangelogModal } from '../components/changelog/ChangelogModal';
 import { RosterUpload } from '../components/roster/RosterUpload';
 import { DeviationDashboard } from '../components/roster/DeviationDashboard';
@@ -35,7 +35,12 @@ function Dashboard() {
 
     const [reportData, setReportData] = useState<any>({});
     const [wasteData, setWasteData] = useState<any[]>([]);
-    const [context, setContext] = useState<any>(null); // Daily context
+    // Daily context
+    const [context, setContext] = useState<any>(null);
+
+    // Order State
+    const [draftItems, setDraftItems] = useState<DraftItem[]>([]);
+    const [orderSending, setOrderSending] = useState(false);
 
     // Modal states
     const [isTipsModalOpen, setIsTipsModalOpen] = useState(false);
@@ -118,6 +123,26 @@ function Dashboard() {
         }
     };
 
+    const handleSendOrder = async () => {
+        if (draftItems.length === 0) return alert(t('yourOrderIsEmpty'));
+        setOrderSending(true);
+        try {
+            await sendOrder({
+                restaurantId,
+                category: 'Food',
+                supplier: 'Tukku Oy', // Default for now
+                recipientEmail: 'orders@tukku.fi', // Default
+                items: draftItems
+            }, 'MANAGER');
+            alert(t('success'));
+            setDraftItems([]);
+        } catch (err: any) {
+            alert(`${t('error')}: ` + err.message);
+        } finally {
+            setOrderSending(false);
+        }
+    };
+
     return (
         <MainLayout
             activeTab={activeTab}
@@ -153,7 +178,13 @@ function Dashboard() {
             ) : activeTab === 'audit' ? (
                 <AuditLogTable restaurantId={restaurantId} />
             ) : activeTab === 'orders' ? (
-                <OrderSuggestionDashboard restaurantId={restaurantId} />
+                <OrderSuggestionDashboard
+                    restaurantId={restaurantId}
+                    draftItems={draftItems}
+                    setDraftItems={setDraftItems}
+                    onSendOrder={handleSendOrder}
+                    sending={orderSending}
+                />
             ) : activeTab === 'purchases' ? (
                 <PurchaseDashboard restaurantId={restaurantId} />
             ) : activeTab === 'roster' ? (
@@ -219,7 +250,8 @@ function Dashboard() {
                     if (action === 'submit_daily') handleSubmit();
                     if (action === 'submit_waste') handleSubmit();
                     if (action === 'submit_inventory') handleSubmit();
-                    if (action === 'send_order') alert('Order sending implemented in v2');
+                    if (action === 'submit_inventory') handleSubmit();
+                    if (action === 'send_order') handleSendOrder();
                 }}
             />
         </MainLayout>
