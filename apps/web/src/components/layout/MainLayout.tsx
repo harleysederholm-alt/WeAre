@@ -3,7 +3,7 @@ import { MobileNav } from './MobileNav';
 import {
     Calendar, Trash2, Package, ShoppingCart,
     FileText, Users, BarChart3, FileClock, Settings, LogOut, Globe, Menu,
-    Moon, Sun
+    Moon, Sun, Bot, Sparkles
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -237,10 +237,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     <div className="flex items-center gap-3">
                         <button
                             onClick={toggleSidebar}
-                            className="p-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 active:bg-slate-100 dark:active:bg-slate-800 rounded-full transition-colors"
+                            className="p-2 text-violet-500 dark:text-violet-400 hover:text-violet-600 dark:hover:text-violet-300 active:bg-violet-50 dark:active:bg-violet-900/20 rounded-full transition-colors relative group"
                         >
-                            <span className="sr-only">Help</span>
-                            <div className="w-6 h-6 rounded-full border-2 border-slate-400 dark:border-slate-500 flex items-center justify-center font-bold text-slate-500 dark:text-slate-400">?</div>
+                            <span className="sr-only">Agent Chat</span>
+                            <div className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-700/50 flex items-center justify-center shadow-sm group-hover:shadow-violet-500/20 transition-all">
+                                <Bot size={20} className="text-violet-600 dark:text-violet-300" strokeWidth={2.5} />
+                            </div>
+                            <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full animate-pulse" />
                         </button>
 
                         {/* User Avatar */}
