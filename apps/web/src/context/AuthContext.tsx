@@ -6,6 +6,7 @@ type Role = 'STAFF' | 'MANAGER' | 'ADMIN';
 
 interface User {
     email: string;
+    name?: string;
     role: Role;
 }
 
@@ -16,6 +17,7 @@ interface AuthContextType {
     activeRestaurant: { id: string; name: string } | null;
     availableRestaurants: { id: string; name: string }[];
     switchRestaurant: (id: string) => void;
+    updateUser: (name: string, email: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -96,6 +98,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const updateUser = (name: string, email: string) => {
+        if (!user) return;
+        const updatedUser = { ...user, name, email };
+        setUser(updatedUser);
+        localStorage.setItem('weare_user', JSON.stringify(updatedUser));
+    };
+
     return (
         <AuthContext.Provider value={{
             user,
@@ -103,7 +112,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             logout,
             activeRestaurant,
             availableRestaurants,
-            switchRestaurant
+            switchRestaurant,
+            updateUser
         }}>
             {children}
         </AuthContext.Provider>

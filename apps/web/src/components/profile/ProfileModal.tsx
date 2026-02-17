@@ -10,7 +10,23 @@ interface ProfileModalProps {
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) => {
     const { t, language } = useLanguage();
-    const { user, activeRestaurant } = useAuth();
+    const { user, activeRestaurant, updateUser } = useAuth();
+
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [editName, setEditName] = React.useState('');
+    const [editEmail, setEditEmail] = React.useState('');
+
+    React.useEffect(() => {
+        if (user) {
+            setEditName((user as any).name || '');
+            setEditEmail(user.email || '');
+        }
+    }, [user]);
+
+    const handleSaveProfile = () => {
+        updateUser(editName, editEmail);
+        setIsEditing(false);
+    };
 
     if (!isOpen) return null;
 
@@ -59,28 +75,72 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                 <div className="p-6 space-y-8">
                     {/* Basic Info Section */}
                     <section>
-                        <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
-                            <User size={20} />
-                            {language === 'fi' ? 'Perustiedot' : 'Basic Information'}
-                        </h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                                <User size={20} />
+                                {language === 'fi' ? 'Perustiedot' : 'Basic Information'}
+                            </h3>
+                            {!isEditing ? (
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                                >
+                                    {language === 'fi' ? 'Muokkaa' : 'Edit'}
+                                </button>
+                            ) : (
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setIsEditing(false)}
+                                        className="text-xs font-bold text-slate-500 hover:text-slate-700"
+                                    >
+                                        {language === 'fi' ? 'Peruuta' : 'Cancel'}
+                                    </button>
+                                    <button
+                                        onClick={handleSaveProfile}
+                                        className="text-xs font-bold text-emerald-600 hover:text-emerald-700"
+                                    >
+                                        {language === 'fi' ? 'Tallenna' : 'Save'}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
                                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
                                     {language === 'fi' ? 'Nimi' : 'Name'}
                                 </label>
-                                <div className="font-medium text-slate-900 dark:text-white flex items-center gap-2">
-                                    <User size={16} className="text-indigo-500" />
-                                    {(user as any)?.name || 'User'}
-                                </div>
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        value={editName}
+                                        onChange={(e) => setEditName(e.target.value)}
+                                        className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-sm text-slate-900 dark:text-white"
+                                    />
+                                ) : (
+                                    <div className="font-medium text-slate-900 dark:text-white flex items-center gap-2">
+                                        <User size={16} className="text-indigo-500" />
+                                        {(user as any)?.name || 'User'}
+                                    </div>
+                                )}
                             </div>
                             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
                                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
                                     {language === 'fi' ? 'Sähköposti' : 'Email'}
                                 </label>
-                                <div className="font-medium text-slate-900 dark:text-white flex items-center gap-2">
-                                    <Mail size={16} className="text-indigo-500" />
-                                    {user?.email}
-                                </div>
+                                {isEditing ? (
+                                    <input
+                                        type="email"
+                                        value={editEmail}
+                                        onChange={(e) => setEditEmail(e.target.value)}
+                                        className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-sm text-slate-900 dark:text-white"
+                                    />
+                                ) : (
+                                    <div className="font-medium text-slate-900 dark:text-white flex items-center gap-2">
+                                        <Mail size={16} className="text-indigo-500" />
+                                        {user?.email}
+                                    </div>
+                                )}
                             </div>
                             <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
                                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
