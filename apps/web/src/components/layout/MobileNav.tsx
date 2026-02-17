@@ -21,7 +21,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange }) 
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200/50 dark:border-slate-800/50 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] z-40 pb-safe transition-all duration-300">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 glass-nav shadow-[0_-5px_20px_rgba(0,0,0,0.05)] z-40 pb-safe transition-all duration-300">
             <div className="flex justify-around items-center h-16 px-1">
                 {navItems.map((item) => {
                     const Icon = item.icon;

@@ -142,7 +142,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             {isMobileMenuOpen && (
                 <div className="fixed inset-0 z-50 lg:hidden">
                     <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
-                    <div className="absolute left-0 top-0 bottom-0 w-[85%] max-w-sm bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-slate-900 dark:text-slate-100 shadow-2xl p-6 flex flex-col border-r border-slate-200 dark:border-slate-800 animate-in slide-in-from-left duration-300">
+                    <div className="absolute left-0 top-0 bottom-0 w-[85%] max-w-sm glass-drawer text-slate-900 dark:text-slate-100 shadow-2xl p-6 flex flex-col animate-in slide-in-from-left duration-300">
                         <div className="flex justify-between items-center mb-8">
                             <img
                                 src="/logo.png"
