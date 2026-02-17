@@ -193,7 +193,7 @@ export const DailyEntryGrid: React.FC<DailyEntryGridProps> = ({ restaurantId, da
             <EditEntryModal
                 isOpen={editModalOpen}
                 onClose={() => setEditModalOpen(false)}
-                title={editType === 'SALES' ? editItem?.category : 'Edit Shift'}
+                title={editType === 'SALES' ? editItem?.category : t('editShift')}
                 initialValue={editItem}
                 onSave={handleSaveEdit}
                 type={editType}

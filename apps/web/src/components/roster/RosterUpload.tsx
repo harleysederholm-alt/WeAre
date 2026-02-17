@@ -32,8 +32,8 @@ export const RosterUpload: React.FC<RosterUploadProps> = ({ restaurantId }) => {
     const loadMock = () => {
         const today = new Date().toISOString().split('T')[0];
         const mock = [
-            { employeeName: 'Matti Meikäläinen', date: today, startTime: '09:00', endTime: '17:00', role: 'CHEF' },
-            { employeeName: 'Teppo Testaaja', date: today, startTime: '10:00', endTime: '16:00', role: 'WAITER' }
+            { employeeName: 'Matti Meikäläinen', date: today, startTime: '09:00', endTime: '17:00', role: 'KOKKI' },
+            { employeeName: 'Teppo Testaaja', date: today, startTime: '10:00', endTime: '16:00', role: 'TARJOILIJA' }
         ];
         setJsonInput(JSON.stringify(mock, null, 2));
     };

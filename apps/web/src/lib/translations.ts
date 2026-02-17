@@ -265,6 +265,22 @@ export const translations = {
         voucherCount: 'Kpl',
         voucherValue: 'Yhteensä (€)',
 
+        // System Update (Changelog)
+        systemUpdate: 'Järjestelmäpäivitys',
+        ackChanges: 'Ole hyvä ja kuittaa seuraavat muutokset jatkaaksesi.',
+        noDetails: 'Ei tarkempia tietoja.',
+        ackAndContinue: 'Kuittaa & Jatka',
+
+        // Edit Modal
+        editSales: 'Muokkaa Myyntiä',
+        editShift: 'Muokkaa Työvuoroa',
+        saveChanges: 'Tallenna Muutokset',
+
+        // Inventory Messages
+        enterCountHelp: 'Syötä fyysinen laskettu määrä.',
+        cannotSubmitNegative: 'Et voi kirjata negatiivisia määriä.',
+        requiredItemsNote: '* Tuotteet merkinnällä REQ ovat pakollisia.',
+
         // Common
         loading: 'Ladataan...',
         success: 'Onnistui',

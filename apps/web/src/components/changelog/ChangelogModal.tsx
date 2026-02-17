@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getChangelogStatus, ackChangelog } from '../../lib/api';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface Change {
     domain: string;
@@ -8,6 +9,7 @@ interface Change {
 }
 
 export const ChangelogModal: React.FC = () => {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [changes, setChanges] = useState<any[]>([]);
     const [currentVersion, setCurrentVersion] = useState(0);
@@ -50,22 +52,22 @@ export const ChangelogModal: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[80vh]">
                 <div className="p-6 border-b border-slate-100 bg-slate-50">
-                    <h2 className="text-xl font-bold text-slate-900">System Update</h2>
+                    <h2 className="text-xl font-bold text-slate-900">{t('systemUpdate')}</h2>
                     <p className="text-sm text-slate-500 mt-1">
-                        Please acknowledge the following changes to continue.
+                        {t('ackChanges')}
                     </p>
                 </div>
 
                 <div className="p-6 overflow-y-auto flex-1">
                     {changes.length === 0 ? (
-                        <p className="text-slate-500 italic">No specific details provided.</p>
+                        <p className="text-slate-500 italic">{t('noDetails')}</p>
                     ) : (
                         <div className="space-y-4">
                             {changes.map((c, i) => (
                                 <div key={i} className="flex gap-3 items-start">
-                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${c.changeType === 'UPDATE' ? 'bg-blue-100 text-blue-700' :
-                                        c.changeType === 'CREATE' ? 'bg-green-100 text-green-700' :
-                                            'bg-red-100 text-red-700'
+                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${(c.changeType === 'UPDATE' || c.changeType === 'PÄIVITYS') ? 'bg-blue-100 text-blue-700' :
+                                            (c.changeType === 'CREATE' || c.changeType === 'UUSI') ? 'bg-green-100 text-green-700' :
+                                                'bg-red-100 text-red-700'
                                         }`}>
                                         {c.changeType}
                                     </span>
@@ -84,7 +86,7 @@ export const ChangelogModal: React.FC = () => {
                         onClick={handleAck}
                         className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 transition-colors shadow-sm"
                     >
-                        Acknowledge & Continue
+                        {t('ackAndContinue')}
                     </button>
                 </div>
             </div>

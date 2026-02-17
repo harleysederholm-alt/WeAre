@@ -109,9 +109,9 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
         const colId = typeof col === 'string' ? col : (col as any).getColId();
 
         let helpText = '';
-        if (colId === 'quantity') helpText = 'Enter the physical count currently on hand.';
+        if (colId === 'quantity') helpText = t('enterCountHelp');
         if (onFocusChange) onFocusChange(helpText);
-    }, [onFocusChange]);
+    }, [onFocusChange, t]);
 
     const handleSubmit = async (overrideReason?: string) => {
         if (loading) return;
@@ -127,7 +127,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
             // Basic Validation
             const negativeItems = items.filter(i => i.quantity < 0);
             if (negativeItems.length > 0) {
-                alert('Cannot submit negative quantities.');
+                alert(t('cannotSubmitNegative'));
                 setLoading(false);
                 return;
             }
@@ -179,7 +179,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ restaurantId, onFo
 
             <div className="flex justify-between items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
                 <p className="text-sm text-slate-500">
-                    * Items marked <span className="text-[10px] bg-red-100 text-red-600 px-1 rounded border border-red-200 font-bold">REQ</span> are required.
+                    {t('requiredItemsNote')}
                 </p>
                 <button
                     onClick={() => handleSubmit()}

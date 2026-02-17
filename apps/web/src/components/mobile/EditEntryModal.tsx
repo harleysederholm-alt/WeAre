@@ -42,7 +42,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                     {type === 'SALES' && (
                         <div>
                             <label className="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
-                                Amount (€)
+                                {t('amount')} (€)
                             </label>
                             <input
                                 type="number"
@@ -58,7 +58,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                     {type === 'ROSTER' && (
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Employee</label>
+                                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{t('employee')}</label>
                                 <input
                                     className="w-full p-3 bg-slate-50 rounded-lg font-bold text-slate-700"
                                     value={formData?.name || ''}
@@ -67,7 +67,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Start</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{t('start')}</label>
                                     <input
                                         type="time"
                                         className="w-full p-3 border border-slate-200 rounded-lg text-lg font-mono"
@@ -76,7 +76,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">End</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{t('end')}</label>
                                     <input
                                         type="time"
                                         className="w-full p-3 border border-slate-200 rounded-lg text-lg font-mono"
@@ -86,7 +86,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Type</label>
+                                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{t('type')}</label>
                                 <select
                                     className="w-full p-3 border border-slate-200 rounded-lg bg-white"
                                     value={formData?.type || 'Normaali'}
@@ -107,7 +107,7 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                         className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg"
                     >
                         <Check size={20} />
-                        Save Changes
+                        {t('saveChanges')}
                     </button>
                 </div>
             </div>
