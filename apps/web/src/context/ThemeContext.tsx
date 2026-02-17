@@ -33,12 +33,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
+        console.log('Toggling theme to:', newTheme);
         setTheme(newTheme);
         localStorage.setItem('theme', newTheme);
 
         if (newTheme === 'dark') {
+            console.log('Adding dark class');
             document.documentElement.classList.add('dark');
         } else {
+            console.log('Removing dark class');
             document.documentElement.classList.remove('dark');
         }
     };
