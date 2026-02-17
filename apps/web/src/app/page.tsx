@@ -199,7 +199,7 @@ function Dashboard() {
                 {(activeTab === 'daily' || activeTab === 'waste' || activeTab === 'inventory') && (
                     <button
                         onClick={handleSubmit}
-                        className="bg-slate-900/90 dark:bg-white/90 backdrop-blur-xl text-white dark:text-slate-900 border border-slate-700 dark:border-white/20 px-8 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all shadow-lg hover:shadow-indigo-500/20 active:scale-95 text-lg h-14 w-full md:w-auto flex items-center justify-center gap-3"
+                        className="bg-white/90 dark:bg-white/90 backdrop-blur-xl text-slate-900 dark:text-slate-900 border border-slate-200 dark:border-white/20 px-8 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all shadow-lg hover:shadow-indigo-500/20 active:scale-95 text-lg h-14 w-full md:w-auto flex items-center justify-center gap-3"
                     >
                         {activeTab === 'daily' && <Check size={24} />}
                         {activeTab === 'daily' ? t('submitDaily') : activeTab === 'waste' ? t('submitWaste') : t('submitInventory')}
