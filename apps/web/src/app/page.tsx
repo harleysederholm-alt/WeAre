@@ -146,6 +146,17 @@ function Dashboard() {
         }
     };
 
+    const getTabGlow = (tab: string) => {
+        switch (tab) {
+            case 'daily': return 'shadow-[0_0_40px_-10px_rgba(16,185,129,0.1)] dark:shadow-[0_0_40px_-10px_rgba(16,185,129,0.2)] border-emerald-100/50 dark:border-emerald-500/20';
+            case 'waste': return 'shadow-[0_0_40px_-10px_rgba(244,63,94,0.1)] dark:shadow-[0_0_40px_-10px_rgba(244,63,94,0.2)] border-rose-100/50 dark:border-rose-500/20';
+            case 'inventory': return 'shadow-[0_0_40px_-10px_rgba(20,184,166,0.1)] dark:shadow-[0_0_40px_-10px_rgba(20,184,166,0.2)] border-teal-100/50 dark:border-teal-500/20';
+            case 'orders': return 'shadow-[0_0_40px_-10px_rgba(59,130,246,0.1)] dark:shadow-[0_0_40px_-10px_rgba(59,130,246,0.2)] border-blue-100/50 dark:border-blue-500/20';
+            case 'roster': return 'shadow-[0_0_40px_-10px_rgba(139,92,246,0.1)] dark:shadow-[0_0_40px_-10px_rgba(139,92,246,0.2)] border-violet-100/50 dark:border-violet-500/20';
+            default: return '';
+        }
+    };
+
     return (
         <MainLayout
             activeTab={activeTab}
@@ -156,53 +167,55 @@ function Dashboard() {
             onLogout={logout}
             onProfileClick={() => setIsProfileModalOpen(true)}
         >
-            {activeTab === 'daily' ? (
-                <DailyEntryGrid
-                    restaurantId={restaurantId}
-                    date={new Date().toISOString().split('T')[0]}
-                    onDataChange={setReportData}
-                    onFocusChange={(ctx) => setContext(ctx)}
-                />
-            ) : activeTab === 'admin' ? (
-                <AdminDashboard />
-            ) : activeTab === 'waste' ? (
-                <WasteGrid
-                    restaurantId={restaurantId}
-                    date={new Date().toISOString().split('T')[0]}
-                    onDataChange={setWasteData}
-                    onFocusChange={(ctx) => setContext(ctx)}
-                />
-            ) : activeTab === 'inventory' ? (
-                <InventoryGrid
-                    restaurantId={restaurantId}
-                    onFocusChange={(ctx) => setContext(ctx)}
-                />
-            ) : activeTab === 'reports' ? (
-                <ReportsDashboard restaurantId={restaurantId} />
-            ) : activeTab === 'audit' ? (
-                <AuditLogTable restaurantId={restaurantId} />
-            ) : activeTab === 'orders' ? (
-                <OrderSuggestionDashboard
-                    restaurantId={restaurantId}
-                    draftItems={draftItems}
-                    setDraftItems={setDraftItems}
-                    onSendOrder={handleSendOrder}
-                    sending={orderSending}
-                />
-            ) : activeTab === 'purchases' ? (
-                <PurchaseDashboard restaurantId={restaurantId} />
-            ) : activeTab === 'roster' ? (
-                <div className="space-y-8">
-                    <RosterUpload restaurantId={restaurantId} />
-                    <DeviationDashboard restaurantId={restaurantId} />
-                </div>
-            ) : null}
+            <div className={`transition-all duration-500 ${getTabGlow(activeTab)} rounded-3xl`}>
+                {activeTab === 'daily' ? (
+                    <DailyEntryGrid
+                        restaurantId={restaurantId}
+                        date={new Date().toISOString().split('T')[0]}
+                        onDataChange={setReportData}
+                        onFocusChange={(ctx) => setContext(ctx)}
+                    />
+                ) : activeTab === 'admin' ? (
+                    <AdminDashboard />
+                ) : activeTab === 'waste' ? (
+                    <WasteGrid
+                        restaurantId={restaurantId}
+                        date={new Date().toISOString().split('T')[0]}
+                        onDataChange={setWasteData}
+                        onFocusChange={(ctx) => setContext(ctx)}
+                    />
+                ) : activeTab === 'inventory' ? (
+                    <InventoryGrid
+                        restaurantId={restaurantId}
+                        onFocusChange={(ctx) => setContext(ctx)}
+                    />
+                ) : activeTab === 'reports' ? (
+                    <ReportsDashboard restaurantId={restaurantId} />
+                ) : activeTab === 'audit' ? (
+                    <AuditLogTable restaurantId={restaurantId} />
+                ) : activeTab === 'orders' ? (
+                    <OrderSuggestionDashboard
+                        restaurantId={restaurantId}
+                        draftItems={draftItems}
+                        setDraftItems={setDraftItems}
+                        onSendOrder={handleSendOrder}
+                        sending={orderSending}
+                    />
+                ) : activeTab === 'purchases' ? (
+                    <PurchaseDashboard restaurantId={restaurantId} />
+                ) : activeTab === 'roster' ? (
+                    <div className="space-y-8">
+                        <RosterUpload restaurantId={restaurantId} />
+                        <DeviationDashboard restaurantId={restaurantId} />
+                    </div>
+                ) : null}
+            </div>
 
             <div className="mt-8 hidden md:flex justify-end gap-4">
                 {(activeTab === 'daily' || activeTab === 'waste' || activeTab === 'inventory') && (
                     <button
                         onClick={handleSubmit}
-                        className="bg-white/90 dark:bg-white/90 backdrop-blur-xl text-slate-900 dark:text-slate-900 border border-slate-200 dark:border-white/20 px-8 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all shadow-lg hover:shadow-indigo-500/20 active:scale-95 text-lg h-14 w-full md:w-auto flex items-center justify-center gap-3"
+                        className="bg-white/90 dark:bg-white/90 backdrop-blur-xl text-black dark:text-slate-900 border border-slate-200 dark:border-white/20 px-8 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all shadow-lg hover:shadow-indigo-500/20 active:scale-95 text-lg h-14 w-full md:w-auto flex items-center justify-center gap-3"
                     >
                         {activeTab === 'daily' && <Check size={24} />}
                         {activeTab === 'daily' ? t('submitDaily') : activeTab === 'waste' ? t('submitWaste') : t('submitInventory')}

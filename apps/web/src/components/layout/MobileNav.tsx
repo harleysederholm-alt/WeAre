@@ -35,7 +35,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange }) 
         const color = colors[id] || 'indigo';
 
         if (type === 'text') return `text-${color}-600 dark:text-${color}-400`;
-        if (type === 'bg') return `bg-${color}-50 dark:bg-${color}-900/30`;
+        if (type === 'bg') return `bg-${color}-100 dark:bg-${color}-900/30`; // Darker bg for light mode visibility
         if (type === 'border') return `border-${color}-200 dark:border-${color}-700`;
         if (type === 'shadow') return `shadow-${color}-500/20`;
         if (type === 'ring') return `ring-${color}-500`;
