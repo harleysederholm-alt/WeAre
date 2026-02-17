@@ -43,13 +43,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
-    // Render children only after mount to prevent hydration mismatch
-    // or render with a visibility hidden flash prevention if preferred, 
-    // but for simple apps, just rendering is often fine if we accept default light.
-    if (!mounted) {
-        return <>{children}</>;
-    }
-
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
             {children}
