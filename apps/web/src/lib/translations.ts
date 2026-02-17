@@ -39,6 +39,17 @@ export const translations = {
         activeFieldHelp: 'Active Field Help',
         memo: 'Memo',
 
+        // Help Sidebar
+        helpTitle: 'Memo / Guides',
+        context: 'Context',
+        searchGuides: 'Search guides...',
+        go: 'GO',
+        hideSearch: 'Hide Search',
+        showSearch: 'Search',
+        noSpecificHelp: 'No specific help for this context.',
+        searchAllGuides: 'Search all guides',
+        addNote: 'Add Note for this screen',
+
         // Daily Context Rules
         ruleTips: "Only 'Normaali' shifts earn tips.",
         rulePrices: "Prices are frozen at event time.",
