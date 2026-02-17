@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MobileNav } from './MobileNav';
 import {
     Calendar, Trash2, Package, ShoppingCart,
-    FileText, Users, BarChart3, FileClock, Settings, LogOut, Globe
+    FileText, Users, BarChart3, FileClock, Settings, LogOut, Globe, Menu
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
@@ -173,9 +173,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             {/* Main Content Area */}
             <main className="flex-1 transition-all duration-300 w-full lg:pl-64 lg:pr-64 pb-20 lg:pb-8">
                 {/* Mobile Header */}
-                <header className="lg:hidden bg-white px-4 py-3 shadow-sm border-b border-slate-100 flex justify-between items-center sticky top-0 z-30">
+                <header className="lg:hidden bg-white/80 backdrop-blur-md px-4 py-3 shadow-sm border-b border-slate-100 flex justify-between items-center sticky top-0 z-30 transition-all">
                     <div className="flex items-center gap-3">
-                        <div className="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shadow-sm">
+                        <button
+                            onClick={() => setIsMobileMenuOpen(true)}
+                            className="p-2 -ml-2 text-slate-500 hover:text-slate-900 active:bg-slate-100 rounded-xl transition-colors"
+                        >
+                            <Menu size={24} />
+                        </button>
+                        <div className="bg-indigo-600 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shadow-sm shadow-indigo-500/20">
                             {activeRestaurant?.name?.charAt(0) || 'W'}
                         </div>
                         <h1 className="font-bold text-slate-900 truncate max-w-[150px]">{activeRestaurant?.name}</h1>

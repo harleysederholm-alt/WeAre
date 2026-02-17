@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Trash2, Package, Menu, LogOut } from 'lucide-react';
+import { Calendar, Trash2, Package, ShoppingCart, Users } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 interface MobileNavProps {
@@ -9,40 +9,44 @@ interface MobileNavProps {
     onLogout: () => void;
 }
 
-export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange, onToggleMenu, onLogout }) => {
+export const MobileNav: React.FC<MobileNavProps> = ({ activeTab, onTabChange }) => {
     const { t } = useLanguage();
 
     const navItems = [
         { id: 'daily', icon: Calendar, label: t('daily') },
         { id: 'waste', icon: Trash2, label: t('waste') },
         { id: 'inventory', icon: Package, label: t('inventory') },
+        { id: 'orders', icon: ShoppingCart, label: t('orders') },
+        { id: 'roster', icon: Users, label: t('roster') },
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50 pb-safe">
-            <div className="flex justify-around items-center h-16">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200/50 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] z-40 pb-safe transition-all duration-300">
+            <div className="flex justify-around items-center h-16 px-1">
                 {navItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = activeTab === item.id;
                     return (
                         <button
                             key={item.id}
-                            onClick={() => onTabChange(item.id)}
-                            className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isActive ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'}`}
+                            onClick={() => {
+                                onTabChange(item.id);
+                                if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(10);
+                            }}
+                            className={`relative flex flex-col items-center justify-center w-full h-full space-y-1 transition-all duration-300 ${isActive ? 'text-indigo-600 -translate-y-1' : 'text-slate-400 hover:text-slate-600'}`}
                         >
-                            <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-                            <span className="text-[10px] font-medium">{item.label}</span>
+                            <div className={`transition-all duration-300 ${isActive ? 'bg-indigo-50 p-1.5 rounded-xl' : ''}`}>
+                                <Icon size={isActive ? 24 : 22} strokeWidth={isActive ? 2.5 : 2} />
+                            </div>
+                            <span className={`text-[10px] font-medium transition-colors ${isActive ? 'text-indigo-600 font-bold' : 'text-slate-500'}`}>
+                                {item.label}
+                            </span>
+                            {isActive && (
+                                <span className="absolute bottom-1 w-1 h-1 bg-indigo-600 rounded-full" />
+                            )}
                         </button>
                     );
                 })}
-                <button
-                    onClick={onToggleMenu}
-                    className={`flex flex-col items-center justify-center w-full h-full space-y-1 text-slate-400 hover:text-slate-600`}
-                >
-                    <Menu size={24} />
-                    <span className="text-[10px] font-medium">Menu</span>
-                </button>
-
             </div>
         </div>
     );

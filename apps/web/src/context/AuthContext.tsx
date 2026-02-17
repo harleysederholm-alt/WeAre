@@ -42,10 +42,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const storedRestaurant = typeof window !== 'undefined' ? localStorage.getItem('weare_active_restaurant') : null;
             if (storedRestaurant && storedRestaurant !== 'undefined') {
                 try {
-                    // eslint-disable-next-line react-hooks/exhaustive-deps
-                    setActiveRestaurant(JSON.parse(storedRestaurant)); // eslint-disable-line react-hooks/set-state-in-effect
+                    setActiveRestaurant(JSON.parse(storedRestaurant));
                 } catch (e) {
-                    setActiveRestaurant(availableRestaurants[0]); // eslint-disable-line react-hooks/set-state-in-effect
+                    setActiveRestaurant(availableRestaurants[0]);
                 }
             } else {
                 setActiveRestaurant(availableRestaurants[0]);

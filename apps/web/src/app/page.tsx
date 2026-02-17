@@ -22,6 +22,7 @@ import { DeviationDashboard } from '../components/roster/DeviationDashboard';
 import { AdminDashboard } from '../components/admin/AdminDashboard';
 import { NoteModal } from '../components/NoteModal';
 import { MainLayout } from '../components/layout/MainLayout';
+import { FloatingActionButton } from '../components/layout/FloatingActionButton';
 
 import { HelpProvider } from '../context/HelpContext';
 import { HelpSidebar } from '../components/help/HelpSidebar';
@@ -211,6 +212,18 @@ function Dashboard() {
                 initialIncludeManagers={managerPolicy.includeManagers}
             />
             <HelpSidebar onAddNote={() => setIsNoteModalOpen(true)} />
+
+            <FloatingActionButton
+                activeTab={activeTab}
+                onAction={(action) => {
+                    if (action === 'submit_daily') handleSubmit();
+                    if (action === 'add_waste') setActiveTab('waste'); // Or scroll to add? WasteGrid adds via row. 
+                    // Actually, WasteGrid might need a 'Add Item' button if it's empty? 
+                    // FAB for Waste usually means "Add Waste Log".
+                    if (action === 'submit_inventory') handleSubmit();
+                    if (action === 'send_order') alert('Order sending implemented in v2');
+                }}
+            />
         </MainLayout>
     );
 }
