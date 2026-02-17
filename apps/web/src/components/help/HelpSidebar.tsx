@@ -143,7 +143,7 @@ export const HelpSidebar: React.FC<HelpSidebarProps> = ({ onAddNote }) => {
                             onClick={onAddNote}
                             className="w-full py-2 border-2 border-dashed border-slate-300 text-slate-500 rounded hover:border-indigo-300 hover:text-indigo-600 transition-colors text-sm"
                         >
-                            + {t('addNote')}
+                            + {t('addContextNote')}
                         </button>
                     </div>
                 )}

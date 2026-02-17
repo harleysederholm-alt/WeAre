@@ -48,7 +48,7 @@ export const translations = {
         showSearch: 'Search',
         noSpecificHelp: 'No specific help for this context.',
         searchAllGuides: 'Search all guides',
-        addNote: 'Add Note for this screen',
+        addContextNote: 'Add Note for this screen',
 
         // Daily Context Rules
         ruleTips: "Only 'Normaali' shifts earn tips.",
@@ -286,6 +286,17 @@ export const translations = {
         editSales: 'Muokkaa Myyntiä',
         editShift: 'Muokkaa Työvuoroa',
         saveChanges: 'Tallenna Muutokset',
+
+        // Help Sidebar
+        helpTitle: 'Memo / Ohjeet',
+        context: 'Konteksti',
+        searchGuides: 'Etsi ohjeita...',
+        go: 'HAE',
+        hideSearch: 'Piilota haku',
+        showSearch: 'Etsi',
+        noSpecificHelp: 'Ei kontekstikohtaista ohjetta.',
+        searchAllGuides: 'Etsi kaikista ohjeista',
+        addContextNote: 'Lisää merkintä tälle näytölle',
 
         // Inventory Messages
         enterCountHelp: 'Syötä fyysinen laskettu määrä.',
