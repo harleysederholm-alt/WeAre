@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { X, Check } from 'lucide-react';
+import { X, Check, Minus } from 'lucide-react';
 
 interface EditEntryModalProps {
     isOpen: boolean;
@@ -26,11 +26,17 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
         onClose();
     };
 
+    const toggleSign = () => {
+        if (formData?.amount) {
+            setFormData({ ...formData, amount: formData.amount * -1 });
+        }
+    };
+
     return (
-        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center pointer-events-none">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" onClick={onClose} />
 
-            <div className="relative z-10 bg-white w-full sm:max-w-md sm:rounded-xl rounded-t-2xl shadow-2xl pointer-events-auto flex flex-col max-h-[90vh] animate-in slide-in-from-bottom duration-200">
+            <div className="relative z-10 bg-white w-full sm:max-w-md rounded-2xl shadow-2xl pointer-events-auto flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
                 <div className="flex justify-between items-center p-4 border-b border-slate-100">
                     <h3 className="font-bold text-lg text-slate-900">{title}</h3>
                     <button onClick={onClose} className="p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200">
@@ -44,14 +50,23 @@ export const EditEntryModal: React.FC<EditEntryModalProps> = ({ isOpen, onClose,
                             <label className="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">
                                 {t('amount')} (€)
                             </label>
-                            <input
-                                type="number"
-                                className="w-full text-3xl font-mono font-bold border-b-2 border-indigo-100 focus:border-indigo-600 outline-none py-2 bg-transparent text-slate-900 placeholder:text-slate-200"
-                                placeholder="0.00"
-                                value={formData?.amount || ''}
-                                onChange={(e) => setFormData({ ...formData, amount: Number(e.target.value) })}
-                                autoFocus
-                            />
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={toggleSign}
+                                    className="p-3 bg-slate-100 rounded-xl text-slate-600 hover:bg-slate-200 active:scale-95 transition-transform"
+                                    title="Vaihda etumerkki (+/-)"
+                                >
+                                    <Minus size={24} />
+                                </button>
+                                <input
+                                    type="number"
+                                    className="flex-1 text-3xl font-mono font-bold border-b-2 border-indigo-100 focus:border-indigo-600 outline-none py-2 bg-transparent text-slate-900 placeholder:text-slate-200 text-right"
+                                    placeholder="0.00"
+                                    value={formData?.amount || ''}
+                                    onChange={(e) => setFormData({ ...formData, amount: Number(e.target.value) })}
+                                    autoFocus
+                                />
+                            </div>
                         </div>
                     )}
 
