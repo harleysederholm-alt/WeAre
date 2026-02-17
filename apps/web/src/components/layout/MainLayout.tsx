@@ -74,9 +74,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         >
             {/* Desktop Sidebar - White Glass Theme */}
             <aside className="hidden lg:flex flex-col w-64 bg-slate-50/90 backdrop-blur-md border-r border-slate-200 fixed h-full z-20 shadow-sm text-slate-600">
-                <div className="p-6 border-b border-slate-200/50">
-                    <h1 className="text-xl font-bold tracking-tight text-slate-900">WeAre Portaali</h1>
-                    <p className="text-xs text-slate-400 mt-1 font-medium">{activeRestaurant?.name}</p>
+                <div className="p-6 border-b border-slate-200/50 flex flex-col items-center">
+                    <img
+                        src="/logo.png"
+                        alt="WeAre Logo"
+                        className="h-12 w-auto object-contain mix-blend-multiply mb-2"
+                    />
+                    <p className="text-xs text-slate-400 font-medium">{activeRestaurant?.name}</p>
                 </div>
 
                 <nav className="flex-1 overflow-y-auto p-4 space-y-1">
