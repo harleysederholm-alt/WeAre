@@ -34,11 +34,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Swipe Handlers
+    // Swipe Handlers
     const swipeHandlers = useSwipe({
         onSwipeRight: () => setIsMobileMenuOpen(true), // Swipe Right (->) opens Left Menu
         onSwipeLeft: () => toggleSidebar(), // Swipe Left (<-) opens Help Sidebar
         edgeOnly: true,
-        edgeThreshold: 50
+        edgeThreshold: 80 // Widened for easier activation
     });
 
     const menuItems = [
@@ -72,7 +73,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
     return (
         <div
-            className="flex min-h-screen bg-slate-50"
+            className="flex min-h-screen bg-slate-50 overscroll-none touch-pan-y"
             onTouchStart={swipeHandlers.onTouchStart}
             onTouchMove={swipeHandlers.onTouchMove}
             onTouchEnd={swipeHandlers.onTouchEnd}
@@ -215,9 +216,20 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                         </div>
                         <h1 className="font-bold text-slate-900 truncate max-w-[150px]">{activeRestaurant?.name}</h1>
                     </div>
-                    {/* User Avatar */}
-                    <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
-                        {user?.email?.charAt(0).toUpperCase()}
+                    {/* Right side icons */}
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={toggleSidebar}
+                            className="p-2 text-slate-500 hover:text-indigo-600 active:bg-slate-100 rounded-full transition-colors"
+                        >
+                            <span className="sr-only">Help</span>
+                            <div className="w-6 h-6 rounded-full border-2 border-slate-400 flex items-center justify-center font-bold text-slate-500">?</div>
+                        </button>
+
+                        {/* User Avatar */}
+                        <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
+                            {user?.email?.charAt(0).toUpperCase()}
+                        </div>
                     </div>
                 </header>
 
