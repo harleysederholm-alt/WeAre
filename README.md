@@ -94,14 +94,4 @@ This ensures full auditability, time-travel debugging, and accurate historical r
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on coding standards, commit messages, and PR processes.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
-
----
-
-© 2026 WeAre Operations Oy. All Rights Reserved.
+© 2026 mAI-Verce Oy. All Rights Reserved.
